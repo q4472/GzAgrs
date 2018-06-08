@@ -1,0 +1,58 @@
+﻿@using Nskd
+@model FarmSib.AreasAgrs.Areas.Agrs.Models.F1Model
+@{
+    Int32 ci = (Int32)ViewData["ci"];
+    NpcDataRow row = Model.workingData.Rows[0];
+    NpcDataColumn col = Model.workingData.Columns[ci];
+}
+<div style="overflow: hidden;">
+    @switch ((String)col.ExtendedProperties["relTable"])
+    {
+        case "Customers":
+            Html.RenderPartial("DetailFields/SelectorWithListBox1", Model.custSelector);
+            break;
+        case "pres":
+            Html.RenderPartial("DetailFields/SelectorWithListBox1", Model.presSelector);
+            break;
+        case "Stuff":
+            Html.RenderPartial("DetailFields/SelectorWithListBox1", Model.stuffSelector);
+            break;
+        case "enu1":
+            Html.RenderPartial("DetailFields/Enu1", row[ci]);
+            break;
+        default:
+            String value = String.Empty;
+            switch (col.DataType.ToString())
+            {
+                case "System.DateTime":
+                case "System.Nullable`1[System.DateTime]":
+                    value = String.Format("{0:yyyy-MM-dd}", row[ci]);
+                    <input type="text"
+                           data-dbname="@col.ExtendedProperties["dbName"]"
+                           value="@value"
+                           style="width: 320px;"
+                           data-val="true" data-val-date="" data-val-mimlength="10"
+                           onchange="this.value = Nskd.Validator.dateNorm(this.value);" />
+                    break;
+                case "System.Double":
+                case "System.Nullable`1[System.Double]":
+                case "System.Int32":
+                    value = String.Format("{0:#########.##}", row[ci]);
+                    <input type="text"
+                           data-dbname="@col.ExtendedProperties["dbName"]"
+                           value="@value"
+                           style="width: 320px;"
+                           data-val="true" data-val-number="" data-val-min="0"
+                           onchange="this.value = Nskd.Validator.numberNorm(this.value);" />
+                    break;
+                default:
+                    value = String.Format("{0}", row[ci]);
+                    <input type="text"
+                           data-dbname="@col.ExtendedProperties["dbName"]"
+                           value="@value"
+                           style="width: 320px;" />
+                    break;
+            }
+            break;
+    }
+</div>

@@ -1,0 +1,91 @@
+﻿@model FarmSib.AreasAgrs.Areas.Agrs.Models.F1Model
+<style type="text/css">
+    input { /* это надо для валидации. она рисует красную рамку и если её нет то всё смещается.*/
+        border: 1px solid black;
+    }
+
+        input.error {
+            border: 1px solid red;
+        }
+
+    #agrs_f1_index {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 12px;
+    }
+
+        #agrs_f1_index div.sect_1 {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            bottom: 350px;
+            width: 100%;
+            overflow: hidden;
+            background-color: #ffffcc;
+        }
+
+            #agrs_f1_index div.sect_1 div.filter_panel {
+                position: absolute;
+                left: 0px;
+                top: 0px;
+                width: 360px;
+                height: 100%;
+                overflow: hidden;
+                float: left;
+            }
+
+            #agrs_f1_index div.sect_1 div.grid_panel {
+                position: absolute;
+                top: 0px;
+                left: 360px;
+                right: 0px;
+                height: 100%;
+                overflow: hidden;
+            }
+
+        #agrs_f1_index div.sect_2 {
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 350px;
+            background-color: #ffccff;
+            overflow: hidden;
+        }
+
+            #agrs_f1_index div.sect_2 div.command_panel {
+                width: 100px;
+                height: 100%;
+                overflow: hidden;
+                float: left;
+            }
+
+            #agrs_f1_index div.sect_2 div.detail_panel {
+                width: auto;
+                height: 100%;
+                overflow: hidden;
+                margin-left: 100px;
+            }
+</style>
+<div id="agrs_f1_index">
+    <div class="sect_1">
+        <div style="position: relative; width: 100%; height: 100%;">
+            <div class="filter_panel">
+                @{ Html.RenderPartial("~/Views/F1/Filter.cshtml", Model.filterTable); }
+            </div>
+            <div class="grid_panel">
+                @{ Html.RenderPartial("~/Views/F1/FilteredView.cshtml", Model); }
+            </div>
+        </div>
+    </div>
+    <div class="sect_2">
+        <div class="command_panel">
+            @{ Html.RenderPartial("~/Views/F1/Command.cshtml"); }
+        </div>
+        <div class="detail_panel">
+        </div>
+    </div>
+</div>

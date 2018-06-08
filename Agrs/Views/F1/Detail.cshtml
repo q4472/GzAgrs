@@ -1,0 +1,130 @@
+﻿@using Nskd
+@using FarmSib.AreasAgrs.Areas.Agrs.Models
+@model FarmSib.AreasAgrs.Areas.Agrs.Models.F1Model
+<style type="text/css">
+    #p_agrs_f1_detail input {
+        padding: 2px;
+    }
+</style>
+<div id="p_agrs_f1_detail" style="width: 1095px; height:auto; overflow: hidden;">
+    <!--
+     if ((Model.NetSqlГарзаДоговоры != null) && (Model.NetSqlГарзаДоговоры.Rows.Count > 0))
+    {
+        <br />
+        <table>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Вид контракта</td>
+                            <td>
+                                <select name="f1">
+                                     switch (Model.NetSqlГарзаДоговоры.Rows[0]["f1"] as String)
+                                    {
+                                        case "эл.аукцион":
+                                            <option value="эл.аукцион" selected="selected">эл.аукцион</option>
+                                            <option value="котировка">котировка</option>
+                                            <option value="комм./разовый">комм./разовый</option>
+                                            <option value="счёт-договор">счёт-договор</option>
+                                            break;
+                                        case "котировка":
+                                            <option value="эл.аукцион">эл.аукцион</option>
+                                            <option value="котировка" selected="selected">котировка</option>
+                                            <option value="комм./разовый">комм./разовый</option>
+                                            <option value="счёт-договор">счёт-договор</option>
+                                            break;
+                                        case "комм./разовый":
+                                            <option value="эл.аукцион">эл.аукцион</option>
+                                            <option value="котировка">котировка</option>
+                                            <option value="комм./разовый" selected="selected">комм./разовый</option>
+                                            <option value="счёт-договор">счёт-договор</option>
+                                            break;
+                                        case "счёт-договор":
+                                            <option value="эл.аукцион">эл.аукцион</option>
+                                            <option value="котировка">котировка</option>
+                                            <option value="комм./разовый">комм./разовый</option>
+                                            <option value="счёт-договор" selected="selected">счёт-договор</option>
+                                            break;
+                                        default:
+                                            <option value=""></option>
+                                            break;
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>№ п/п (внутр)</td>
+                            <td><input type="text" value=" Model.NetSqlГарзаДоговоры.Rows[0]["f2"]" /></td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>q2</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    }
+    -->
+    @if ((Model.workingData != null) && (Model.workingData.Rows.Count > 0))
+    {
+        NpcDataRow row = Model.workingData.Rows[0];
+        <br />
+        <form id="p_agrs_f1_detail_form" novalidate="novalidate">
+            <table>
+                <tr>
+                    <td>
+                        <table>
+                            @for (int ci = 0; ci < Math.Min(Model.workingData.Columns.Count, 12); ci++)
+                            {
+                                NpcDataColumn col = Model.workingData.Columns[ci];
+                                String hidden = ((Boolean)col.ExtendedProperties["hidden"]) ? "display: none;" : "";
+                                <tr style="height: 24px; @hidden">
+                                    <td style="text-align: right; width: 200px; padding: 2px;">
+                                        @{ Html.RenderPartial("DetailFields/Caption", Model, new ViewDataDictionary() { new KeyValuePair<String, Object>("ci", ci) }); }
+                                    </td>
+                                    <td>
+                                        @{ Html.RenderPartial("DetailFields/Value", Model, new ViewDataDictionary() { new KeyValuePair<String, Object>("ci", ci) }); }
+                                    </td>
+                                </tr>
+                                            }
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            @for (int ci = 12; ci < Model.workingData.Columns.Count; ci++)
+                            {
+                                NpcDataColumn col = Model.workingData.Columns[ci];
+                                String hidden = ((Boolean)col.ExtendedProperties["hidden"]) ? "display: none;" : "";
+                                <tr style="height: 24px; @hidden">
+                                    <td style="text-align: right; width: 200px; padding: 2px;">
+                                        @{ Html.RenderPartial("DetailFields/Caption", Model, new ViewDataDictionary() { new KeyValuePair<String, Object>("ci", ci) }); }
+                                    </td>
+                                    <td>
+                                        @{ Html.RenderPartial("DetailFields/Value", Model, new ViewDataDictionary() { new KeyValuePair<String, Object>("ci", ci) }); }
+                                    </td>
+                                </tr>
+                                            }
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </form>
+                                            }
+</div>
+<script type="text/javascript">
+
+    Nskd.Validator.parse('#p_agrs_f1_detail_form');
+
+    $('#p_agrs_f1_detail input').change(function (event) {
+        agrsF1DetailFieldChange(this);
+    });
+    function agrsF1DetailFieldChange(element) {
+        $(element).css('background-color', '#cfc');
+        $('#p_agrs_f1_save_button').css('background-color', '#cfc');
+        $('#p_agrs_f1_save_button').prop('disabled', false);
+    }
+</script>

@@ -1,0 +1,38 @@
+﻿@using System.Data
+@model System.Data.DataTable
+<div>
+    <table>
+        @foreach (DataRow dr in Model.Rows)
+        {
+            <tr>
+                @if (Model.Columns.Contains("Код"))
+                {
+                    <td style="display: none;">@dr["Код"].ToString().Trim()</td>
+                }
+                else if (Model.Columns.Contains("CODE"))
+                {
+                    <td style="display: none;">@dr["CODE"].ToString().Trim()</td>
+                }
+
+                @if (Model.Columns.Contains("Наименование"))
+                {
+                    <td>@dr["Наименование"].ToString().Trim()</td>
+                }
+                else if (Model.Columns.Contains("DESCR"))
+                {
+                    <td>@dr["DESCR"].ToString().Trim()</td>
+                }
+
+                @if (Model.Columns.Contains("ИНН"))
+                {
+                    <td>@dr["ИНН"].ToString().Trim()</td>
+                }
+
+                @if (Model.Columns.Contains("Город"))
+                {
+                    <td>@dr["Город"].ToString().Trim()</td>
+                }
+            </tr>
+        }
+    </table>
+</div>

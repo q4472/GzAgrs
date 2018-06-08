@@ -1,0 +1,123 @@
+﻿@model FarmSib.AreasAgrs.Areas.Agrs.Models.SelectorWithListBox1
+<style type="text/css">
+    div.stack_panel div.modal_bg {
+        display: none;
+        position: fixed;
+        z-index: 100;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+        div.stack_panel div.modal_bg div.modal_box {
+            width: 380px;
+            height: 320px;
+            border: 1px solid black;
+            padding: 2px;
+            background-color: #fff;
+            overflow: hidden;
+            margin: 15% auto;
+        }
+
+            div.stack_panel div.modal_bg div.modal_box div.header span {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+                div.stack_panel div.modal_bg div.modal_box div.header span:hover,
+                div.stack_panel div.modal_bg div.modal_box div.header span:hover {
+                    color: black;
+                    cursor: pointer;
+                    text-decoration: none;
+                }
+
+            div.stack_panel div.modal_bg div.modal_box div.content tr:nth-child(2n+1) {
+                background-color: #eee;
+            }
+            div.stack_panel div.modal_bg div.modal_box div.content tr:hover {
+                background-color: #ff8;
+            }
+</style>
+<div class="stack_panel">
+    <input type="hidden" class="table_name" value="@Model.TableName" />
+    <input type="text" class="text_box"
+           value="@Model.InitialValue"
+           data-code=""
+           data-inn=""
+           data-city=""
+           style="width: 300px;" />
+    <input type="button" onclick="AgrsSelectorWithListBox.stackPanelButtonClick(this)" value="..." style="width: 20px; height: 20px;" />
+    <div class="modal_bg" style="display: none;">
+        <div class="modal_box">
+            <div class="header">
+                <span onclick="$(this.parentNode.parentNode.parentNode).hide();">&times</span>
+            </div>
+            <div class="content">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    if (typeof (AgrsSelectorWithListBox) === 'undefined') {
+        var AgrsSelectorWithListBox = (function () {
+            var mainDiv = null;
+            var tableName = null;
+            var filter = null;
+            var modalBG = null;
+            var modalBox = null;
+            var content = null;
+            return {
+                stackPanelButtonClick: function (inputButton) {
+                    mainDiv = $(inputButton.parentNode);
+                    tableName = mainDiv.find('input.table_name').val();
+                    // если что-то введено в TextBox, то использовать как фильтр
+                    filter = mainDiv.find('input.text_box');
+                    modalBG = mainDiv.find('div.modal_bg');
+                    modalBox = modalBG.find('div.modal_box');
+                    content = modalBox.find('div.content');
+
+                    var rqp = {
+                        Parameters: [
+                            { Name: 'tableName', Value: tableName },
+                            { Name: 'filter', Value: filter.val() }
+                        ]
+                    };
+                    //alert(Nskd.Json.toString(rqp));
+                    Nskd.Http.post({
+                        url: '/Agrs/F1/SelectorWithListBox/GetData',
+                        rqp: rqp,
+                        done: function (data) {
+                            //alert(data);
+                            content.html(data);
+                            // на все строчки вешаем обработчик
+                            content.find('tr').click(function (event) {
+                                var tr = $(this);
+                                // первая ячейка - код. Переписываем его в атрибут.
+                                filter.attr('data-code', tr.find('td:eq(0)').text());
+                                // вторая ячейка - описание. Переписываем его в текстовое поле.
+                                filter.val(tr.find('td:eq(1)').text());
+                                // третья ячейка - инн. Переписываем его в атрибут.
+                                filter.attr('data-inn', tr.find('td:eq(2)').text());
+                                // четвётая ячейка - город. Переписываем его в атрибут.
+                                filter.attr('data-city', tr.find('td:eq(3)').text());
+                                // Переносим город, если он есть, в поле "Город (населённый пункт) в родительской форме"
+                                if (filter.attr('data-city')) {
+                                    $('input[type="text"][data-dbname="f5"]').val(filter.attr('data-city'));
+                                }
+                                // выбор сделан. Убираем список.
+                                modalBG.hide();
+                            });
+                            modalBG.show();
+                        }
+                    });
+                }
+            };
+        })();
+    }
+</script>

@@ -1,0 +1,83 @@
+﻿@using System.Data
+@model FarmSib.AreasAgrs.Areas.Agrs.Models.F1Model
+<style type="text/css">
+    div.agrs_f1_filtered_view {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+        div.agrs_f1_filtered_view th {
+            padding: 2px;
+            border: 1px solid black;
+            font-weight: bold;
+        }
+
+            div.agrs_f1_filtered_view th div {
+                height: 13px;
+                overflow: hidden;
+            }
+
+        div .agrs_f1_filtered_view td {
+            padding: 2px;
+            border: 1px solid black;
+        }
+
+            div.agrs_f1_filtered_view td div {
+                height: 13px;
+                overflow: hidden;
+            }
+</style>
+<div class="agrs_f1_filtered_view">
+    <div>
+        <table>
+            <tr>
+                <th><div style="width: 80px">Вид</div></th>
+                <th><div style="width: 60px">№ п/п</div></th>
+                <th><div style="width: 180px">№ договора (внешн.)</div></th>
+                <th><div style="width: 240px">Наименование клиента</div></th>
+                <th><div style="width: 80px">Дата</div></th>
+                <th><div style="width: 80px">Менеджер</div></th>
+                <th><div style="width: 80px">Сумма</div></th>
+                <th><div style="width: 140px">№ торгов</div></th>
+            </tr>
+        </table>
+    </div>
+    <div style="position: absolute; top: 20px; left:0px; bottom: 0px; width: 100%; overflow-x: hidden; overflow-y: auto;">
+        <table>
+            @foreach (DataRow dr in Model.NetSqlГарзаДоговоры.Rows)
+            {
+                <tr data-guid="@dr["id"]" onclick="F1FilteredViewRowClick(this);">
+                    <td><div style="width: 80px">@dr["f1"]</div></td>
+                    <td><div style="width: 60px; text-align: right">@dr["f2"]</div></td>
+                    <td><div style="width: 180px">@dr["f3"]</div></td>
+                    <td><div style="width: 240px">@dr["f4"]</div></td>
+                    <td><div style="width: 80px; text-align: right">@((dr["f6"] is DateTime) ? ((DateTime)dr["f6"]).ToString("dd.MM.yy") : "")</div></td>
+                    <td><div style="width: 80px">@dr["f12"]</div></td>
+                    <td><div style="width: 80px; text-align: right">@((dr["f13"] is Double) ? ((Double)dr["f13"]).ToString("n2") : "")</div></td>
+                    <td><div style="width: 140px">@dr["f15"]</div></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function F1FilteredViewRowClick(tr) {
+        $(tr.parentNode).find('tr').css('background-color', 'transparent');
+        $(tr).css('background-color', '#cfc');
+
+        $('#p_agrs_f1_save_button').prop('disabled', true);
+        $('#p_agrs_f1_save_button').css('background-color', '#eee');
+        $('#p_agrs_f1_add_button').prop('disabled', false);
+        $('#p_agrs_f1_add_button').css('background-color', '#eee');
+        $('#p_agrs_f1_del_button').prop('disabled', false);
+        $('#p_agrs_f1_del_button').css('background-color', '#eee');
+
+        var guid = tr.getAttribute('data-guid');
+        var data = 'id=' + escape(guid);
+
+        $.post('/Agrs/F1/FilteredView/GetDataForDetailSection', data, function (data) {
+            $('#agrs_f1_index div.sect_2 div.detail_panel').html(data);
+        });
+    }
+</script>

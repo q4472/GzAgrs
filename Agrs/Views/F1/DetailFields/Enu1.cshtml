@@ -1,0 +1,48 @@
+﻿@model Object
+@{ String value = Model as String; }
+<div>
+    <div style="display: none;">
+        <input type="text" id="p_agrs_f1_enu1" value="@value" />
+    </div>
+    <select id="p_agrs_f1_enu1_select" 
+            onchange="pAgrsF1Enu1SelectOnchange(this)">
+        @if (value == "эл.аукцион")
+        {
+            <option value="эл.аукцион" selected="selected">эл.аукцион</option>
+        }
+        else
+        {
+            <option value="эл.аукцион">эл.аукцион</option>
+        }
+        @if (value == "котировка")
+        {
+            <option value="котировка" selected="selected">котировка</option>
+        }
+        else
+        {
+            <option value="котировка">котировка</option>
+        }
+        @if (value == "комм./разовый")
+        {
+            <option value="комм./разовый" selected="selected">комм./разовый</option>
+        }
+        else
+        {
+            <option value="комм./разовый">комм./разовый</option>
+        }
+        @if (value == "счёт-договор")
+        {
+            <option value="счёт-договор" selected="selected">счёт-договор</option>
+        }
+        else
+        {
+            <option value="счёт-договор">счёт-договор</option>
+        }
+    </select>
+    <script type="text/javascript">
+        function pAgrsF1Enu1SelectOnchange(el) {
+            $('#p_agrs_f1_enu1').val($(el).val());
+            agrsF1DetailFieldChange(el);
+        }
+    </script>
+</div>

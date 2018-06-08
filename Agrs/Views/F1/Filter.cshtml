@@ -1,0 +1,120 @@
+﻿@using Nskd
+@model NpcDataTable
+<div style="width: 320px; overflow: hidden;">
+    <div style="padding: 4px; text-align: center; font-size: 14pt; height: 30px;">
+        <span>Фильтр для поиска</span>
+    </div>
+    <form id="p_agrs_f1_filter_form" novalidate="novalidate" onsubmit="agrsF1FilterRefresh(); return false;">
+        <div style="padding: 4px;">
+            <table>
+                @for (int ci = 0; ci < Model.Columns.Count; ci++)
+                {
+                    NpcDataColumn dc = Model.Columns[ci];
+                    Int32 w = (Int32)dc.ExtendedProperties["width"];
+                    if (w != 0)
+                    {
+                        <tr style="height: 30px;">
+                            <td style="padding: 2px; width: 120px;">@dc.Caption</td>
+                            @switch (dc.DataType.ToString())
+                            {
+                                case "System.DateTime":
+                                case "System.Nullable`1[System.DateTime]":
+                                    <td>
+                                        <input type="text"
+                                               name="@(dc.ColumnName + "min")"
+                                               style="padding: 2px; width: 80px;"
+                                               value="@Model.Rows[0][ci]"
+                                               data-val="true" data-val-date="" data-val-minlength="10"
+                                               onchange="this.value = Nskd.Validator.dateNorm(this.value);" />
+                                    </td>
+                                    <td>
+                                        <div style="width: 14px;"></div>
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                               name="@(dc.ColumnName + "max")"
+                                               style="padding: 2px; width: 80px;"
+                                               value="@Model.Rows[1][ci]"
+                                               data-val="true" data-val-date="" data-val-minlength="10"
+                                               onchange="this.value = Nskd.Validator.dateNorm(this.value);" />
+                                    </td>
+                                    break;
+                                case "System.Double":
+                                case "System.Nullable`1[System.Double]":
+                                case "System.Int32":
+                                case "System.Nullable`1[System.Int32]":
+                                <td>
+                                    <input type="text"
+                                           name="@(dc.ColumnName + "min")"
+                                           style="padding: 2px; width: 80px;"
+                                           value="@Model.Rows[0][ci]"
+                                           data-val="true" data-val-number="" data-val-min="0"
+                                           onchange="this.value = Nskd.Validator.numberNorm(this.value);" />
+                                </td>
+                                <td>
+                                    <div style="width: 14px;"></div>
+                                </td>
+                                <td>
+                                    <input type="text"
+                                           name="@(dc.ColumnName + "max")"
+                                           style="padding: 2px; width: 80px;"
+                                           value="@Model.Rows[1][ci]"
+                                           data-val="true" data-val-number="" data-val-min="0"
+                                           onchange="this.value = Nskd.Validator.numberNorm(this.value);" />
+                                </td>
+                                    break;
+                                default:
+                                <td colspan="3">
+                                    <input type="text"
+                                           name="@dc.ColumnName"
+                                           style="padding: 2px; width: 180px;"
+                                           value="@Model.Rows[0][ci]" />
+                                </td>
+
+                                    break;
+                            }
+                        </tr>
+                    }
+                }
+                <tr>
+                    <td colspan="4" style="text-align: right;">
+                        <input type="submit"
+                               id="p_agrs_f1_apply_filter"
+                               style="padding: 4px; width: 140px;"
+                               value="Применить фильтр" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+    Nskd.Validator.parse('#p_agrs_f1_filter_form');
+
+    function agrsF1FilterRefresh() {
+
+        $('#p_agrs_f1_apply_filter').prop('disabled', true);
+        $('#agrs_f1_index div.sect_1 div.grid_panel').empty();
+        $('#p_agrs_f1_save_button').prop('disabled', true);
+        $('#p_agrs_f1_save_button').css('background-color', '#eee');
+        $('#agrs_f1_index div.sect_2 div.detail_panel').empty();
+
+        Nskd.Js.post(
+            '/Agrs/F1/Filter/GetDataForFilteredView',
+            'p_agrs_f1_filter_form',
+            agrsF1FilterRefreshSuccess,
+            $('#agrs_f1_index div.sect_1 div.grid_panel'),
+            '_layout_footer_loading');
+    }
+
+    function agrsF1FilterRefreshSuccess() {
+        $('#p_agrs_f1_apply_filter').prop('disabled', false);
+        $('#p_agrs_f1_save_button').prop('disabled', true);
+        $('#p_agrs_f1_save_button').css('background-color', '#eee');
+        $('#p_agrs_f1_add_button').prop('disabled', false);
+        $('#p_agrs_f1_add_button').css('background-color', '#eee');
+        $('#p_agrs_f1_del_button').prop('disabled', false);
+        $('#p_agrs_f1_del_button').css('background-color', '#eee');
+    }
+</script>
