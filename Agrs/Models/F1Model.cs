@@ -8,33 +8,38 @@ namespace FarmSib.AreasAgrs.Areas.Agrs.Models
 {
     public class F1Model
     {
-        public SelectorWithListBox1 custSelector { get; set; }
-        public SelectorWithListBox1 presSelector { get; set; }
-        public SelectorWithListBox1 stuffSelector { get; set; }
-        public NpcDataTable workingData { get; set; } // таблица Договоры
+        public SelectorWithListBox1 CustSelector { get; set; }
+        public SelectorWithListBox1 PresSelector { get; set; }
+        public SelectorWithListBox1 StuffSelector { get; set; }
+        public NpcDataTable WorkingData { get; set; } // таблица Договоры
         public DataTable NetSqlГарзаДоговоры { get; private set; }
-        public NpcDataTable filterTable { get; set; } // фильтр для таблицы Договоры
+        public NpcDataTable FilterTable { get; set; } // фильтр для таблицы Договоры
+        public DataTable Filter { get; set; }
         //private NpcDataRow filterRow { get; set; }
         public F1Model(String sessionId)
         {
             GetData();
-            GetFilter();
+            CreateFilterTable();
             LoadDictionariesAndFillPopups();
         }
         public F1Model(Dictionary<String, String> fs)
         {
             GetData(fs);
         }
+        public F1Model(RequestPackage rqp)
+        {
+            GetData(rqp);
+        }
         public void LoadDictionariesAndFillPopups()
         {
-            custSelector = new SelectorWithListBox1("Клиенты", workingData.Rows[0]["F4"] as String);
-            presSelector = new SelectorWithListBox1("Представители", workingData.Rows[0]["pres"] as String);
-            stuffSelector = new SelectorWithListBox1("Сотрудники", workingData.Rows[0]["F12"] as String);
+            CustSelector = new SelectorWithListBox1("Клиенты", WorkingData.Rows[0]["F4"] as String);
+            PresSelector = new SelectorWithListBox1("Представители", WorkingData.Rows[0]["pres"] as String);
+            StuffSelector = new SelectorWithListBox1("Сотрудники", WorkingData.Rows[0]["F12"] as String);
         }
         public void GetData(Dictionary<String, String> fs = null)
         {
-            workingData = Ss.CreateNpcDataTableWithMd(SsAgrTable.Md);
-            Ss.FillSsAgrTable1(workingData, fs);
+            WorkingData = Ss.CreateNpcDataTableWithMd(SsAgrTable.Md);
+            Ss.FillSsAgrTable1(WorkingData, fs);
 
             NetSqlГарзаДоговоры = GetNetSqlГарзаДоговоры(fs);
 
@@ -45,17 +50,17 @@ namespace FarmSib.AreasAgrs.Areas.Agrs.Models
                 {
                     if (fs != null && fs.ContainsKey("id"))
                     {
-                        String code = workingData.Rows[0][16].ToString();
+                        String code = WorkingData.Rows[0][16].ToString();
                         DataTable dt = Data.Garza1Cv77.F1GetAgrByCode(code);
                         if (dt != null && dt.Rows.Count > 0)
                         {
-                            workingData.Rows[0]["SP2283"] = dt.Rows[0]["ДатаОкончания"];
+                            WorkingData.Rows[0]["SP2283"] = dt.Rows[0]["ДатаОкончания"];
                             NetSqlГарзаДоговоры.Rows[0]["SP2283"] = dt.Rows[0]["ДатаОкончания"];
 
-                            workingData.Rows[0]["SP3578"] = dt.Rows[0]["Пролонгация"];
+                            WorkingData.Rows[0]["SP3578"] = dt.Rows[0]["Пролонгация"];
                             NetSqlГарзаДоговоры.Rows[0]["SP3578"] = dt.Rows[0]["Пролонгация"];
 
-                            workingData.Rows[0]["SP3581"] = dt.Rows[0]["ОтсрочкаПлатежа"];
+                            WorkingData.Rows[0]["SP3581"] = dt.Rows[0]["ОтсрочкаПлатежа"];
                             NetSqlГарзаДоговоры.Rows[0]["SP3581"] = dt.Rows[0]["ОтсрочкаПлатежа"];
                         }
                     }
@@ -63,15 +68,23 @@ namespace FarmSib.AreasAgrs.Areas.Agrs.Models
             }
             catch (Exception e) { Console.WriteLine(e); }
         }
-        public void GetFilter()
+        public void GetData(RequestPackage rqp)
         {
-            filterTable = Ss.CreateNpcDataTableWithMd(SsAgrTable.Md);
+            NetSqlГарзаДоговоры = GetNetSqlГарзаДоговоры(rqp);
+        }
+        public void CreateFilterTable()
+        {
+            FilterTable = Ss.CreateNpcDataTableWithMd(SsAgrTable.Md);
             // row for min
-            NpcDataRow filterRow = filterTable.NewRow();
-            filterTable.Rows.Add(filterRow);
+            NpcDataRow filterRow = FilterTable.NewRow();
+            FilterTable.Rows.Add(filterRow);
             // row for max
-            filterRow = filterTable.NewRow();
-            filterTable.Rows.Add(filterRow);
+            filterRow = FilterTable.NewRow();
+            FilterTable.Rows.Add(filterRow);
+
+            Filter = NetSqlГарзаДоговоры.Clone();
+            Filter.Rows.Add(Filter.NewRow()); // min
+            Filter.Rows.Add(Filter.NewRow()); // max
         }
         public static DataTable GetDataForSelectorWithListBox(String tableName, String filter)
         {
@@ -223,6 +236,11 @@ namespace FarmSib.AreasAgrs.Areas.Agrs.Models
         private static DataTable GetNetSqlГарзаДоговоры(Dictionary<String, String> fs)
         {
             DataTable dt = Data.GarzaSql.F1GetДоговоры(fs);
+            return dt;
+        }
+        private static DataTable GetNetSqlГарзаДоговоры(RequestPackage rqp)
+        {
+            DataTable dt = Data.GarzaSql.F1GetДоговоры(rqp);
             return dt;
         }
     }

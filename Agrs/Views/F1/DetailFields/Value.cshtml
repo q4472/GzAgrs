@@ -2,20 +2,20 @@
 @model FarmSib.AreasAgrs.Areas.Agrs.Models.F1Model
 @{
     Int32 ci = (Int32)ViewData["ci"];
-    NpcDataRow row = Model.workingData.Rows[0];
-    NpcDataColumn col = Model.workingData.Columns[ci];
+    NpcDataRow row = Model.WorkingData.Rows[0];
+    NpcDataColumn col = Model.WorkingData.Columns[ci];
 }
 <div style="overflow: hidden;">
     @switch ((String)col.ExtendedProperties["relTable"])
     {
         case "Customers":
-            Html.RenderPartial("DetailFields/SelectorWithListBox1", Model.custSelector);
+            Html.RenderPartial("DetailFields/SelectorWithListBox1", Model.CustSelector);
             break;
         case "pres":
-            Html.RenderPartial("DetailFields/SelectorWithListBox1", Model.presSelector);
+            Html.RenderPartial("DetailFields/SelectorWithListBox1", Model.PresSelector);
             break;
         case "Stuff":
-            Html.RenderPartial("DetailFields/SelectorWithListBox1", Model.stuffSelector);
+            Html.RenderPartial("DetailFields/SelectorWithListBox1", Model.StuffSelector);
             break;
         case "enu1":
             Html.RenderPartial("DetailFields/Enu1", row[ci]);

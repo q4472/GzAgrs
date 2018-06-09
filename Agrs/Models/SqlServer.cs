@@ -58,11 +58,11 @@ namespace FarmSib.AreasAgrs.Areas.Agrs.Models
             }
         }
         /*
-            public NpcDataTable GetSsCustTable(NpcDataTable filterTable)
+            public NpcDataTable GetSsCustTable(NpcDataTable FilterTable)
             {
                 NpcDataTable table = CreateNpcDataTableWithMd(SsCustTable.Md);
 
-                DataTable fd = (filterTable == null) ? null : filterTable.Rows[0].ToDataTable();
+                DataTable fd = (FilterTable == null) ? null : FilterTable.Rows[0].ToDataTable();
 
                 DataTable dt = ss.GetCustData(fd);
 
@@ -82,11 +82,11 @@ namespace FarmSib.AreasAgrs.Areas.Agrs.Models
                 return table;
             }
 
-            public NpcDataTable GetSsStuffTable(NpcDataTable filterTable)
+            public NpcDataTable GetSsStuffTable(NpcDataTable FilterTable)
             {
                 NpcDataTable table = CreateNpcDataTableWithMd(SsStuffTable.Md);
 
-                DataTable fd = (filterTable == null) ? null : filterTable.Rows[0].ToDataTable();
+                DataTable fd = (FilterTable == null) ? null : FilterTable.Rows[0].ToDataTable();
 
                 DataTable dt = ss.GetStuffData(fd);
 

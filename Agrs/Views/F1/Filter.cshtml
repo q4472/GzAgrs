@@ -1,120 +1,127 @@
-﻿@using Nskd
-@model NpcDataTable
-<div style="width: 320px; overflow: hidden;">
-    <div style="padding: 4px; text-align: center; font-size: 14pt; height: 30px;">
+﻿<style type="text/css">
+    #args_views_f1_filter table tr {
+        padding: 2px;
+    }
+
+        #args_views_f1_filter table tr td {
+            padding: 2px;
+        }
+
+            #args_views_f1_filter table tr td:nth-child(1) {
+                text-align: right;
+            }
+
+            #args_views_f1_filter table tr td:nth-child(3) input {
+                width: 20px;
+            }
+
+    #args_views_f1_filter table input.min, table input.max {
+        width: 80px;
+        text-align: right;
+    }
+
+    #args_views_f1_filter table input.regexp {
+        width: 174px;
+    }
+</style>
+<div id="args_views_f1_filter">
+    <div style="padding: 4px; text-align: center; font-size: 12pt; height: 30px;">
         <span>Фильтр для поиска</span>
     </div>
-    <form id="p_agrs_f1_filter_form" novalidate="novalidate" onsubmit="agrsF1FilterRefresh(); return false;">
-        <div style="padding: 4px;">
-            <table>
-                @for (int ci = 0; ci < Model.Columns.Count; ci++)
-                {
-                    NpcDataColumn dc = Model.Columns[ci];
-                    Int32 w = (Int32)dc.ExtendedProperties["width"];
-                    if (w != 0)
-                    {
-                        <tr style="height: 30px;">
-                            <td style="padding: 2px; width: 120px;">@dc.Caption</td>
-                            @switch (dc.DataType.ToString())
-                            {
-                                case "System.DateTime":
-                                case "System.Nullable`1[System.DateTime]":
-                                    <td>
-                                        <input type="text"
-                                               name="@(dc.ColumnName + "min")"
-                                               style="padding: 2px; width: 80px;"
-                                               value="@Model.Rows[0][ci]"
-                                               data-val="true" data-val-date="" data-val-minlength="10"
-                                               onchange="this.value = Nskd.Validator.dateNorm(this.value);" />
-                                    </td>
-                                    <td>
-                                        <div style="width: 14px;"></div>
-                                    </td>
-                                    <td>
-                                        <input type="text"
-                                               name="@(dc.ColumnName + "max")"
-                                               style="padding: 2px; width: 80px;"
-                                               value="@Model.Rows[1][ci]"
-                                               data-val="true" data-val-date="" data-val-minlength="10"
-                                               onchange="this.value = Nskd.Validator.dateNorm(this.value);" />
-                                    </td>
-                                    break;
-                                case "System.Double":
-                                case "System.Nullable`1[System.Double]":
-                                case "System.Int32":
-                                case "System.Nullable`1[System.Int32]":
-                                <td>
-                                    <input type="text"
-                                           name="@(dc.ColumnName + "min")"
-                                           style="padding: 2px; width: 80px;"
-                                           value="@Model.Rows[0][ci]"
-                                           data-val="true" data-val-number="" data-val-min="0"
-                                           onchange="this.value = Nskd.Validator.numberNorm(this.value);" />
-                                </td>
-                                <td>
-                                    <div style="width: 14px;"></div>
-                                </td>
-                                <td>
-                                    <input type="text"
-                                           name="@(dc.ColumnName + "max")"
-                                           style="padding: 2px; width: 80px;"
-                                           value="@Model.Rows[1][ci]"
-                                           data-val="true" data-val-number="" data-val-min="0"
-                                           onchange="this.value = Nskd.Validator.numberNorm(this.value);" />
-                                </td>
-                                    break;
-                                default:
-                                <td colspan="3">
-                                    <input type="text"
-                                           name="@dc.ColumnName"
-                                           style="padding: 2px; width: 180px;"
-                                           value="@Model.Rows[0][ci]" />
-                                </td>
-
-                                    break;
-                            }
-                        </tr>
-                    }
-                }
-                <tr>
-                    <td colspan="4" style="text-align: right;">
-                        <input type="submit"
-                               id="p_agrs_f1_apply_filter"
-                               style="padding: 4px; width: 140px;"
-                               value="Применить фильтр" />
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </form>
+    <table>
+        <tr>
+            <td>Вид контракта:</td>
+            <td colspan="3"><input type="text" class="regexp" /></td>
+        </tr>
+        <tr>
+            <td>№ п/п (внутр):</td>
+            <td colspan="3"><input type="text" class="regexp" /></td>
+        </tr>
+        <tr>
+            <td>№ договора:</td>
+            <td colspan="3"><input type="text" class="regexp" /></td>
+        </tr>
+        <tr>
+            <td>Клиент:</td>
+            <td colspan="3"><input type="text" class="regexp" /></td>
+        </tr>
+        <tr>
+            <td>Дата договора:</td>
+            <td><input type="text" class="date min" /></td>
+            <td></td>
+            <td><input type="text" class=" date max" /></td>
+        </tr>
+        <tr>
+            <td>Менеджер:</td>
+            <td colspan="3"><input type="text" class="regexp" /></td>
+        </tr>
+        <tr>
+            <td>Сумма:</td>
+            <td><input type="text" class="n2 min" /></td>
+            <td></td>
+            <td><input type="text" class="n2 max" /></td>
+        </tr>
+        <tr>
+            <td>№ торгов:</td>
+            <td colspan="3"><input type="text" class="regexp" /></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: center;">
+                <input type="submit" value="Применить фильтр" onclick="ArgsViewsF1Filter.apply();" />
+            </td>
+        </tr>
+    </table>
 </div>
 <script type="text/javascript">
-
-    Nskd.Validator.parse('#p_agrs_f1_filter_form');
-
-    function agrsF1FilterRefresh() {
-
-        $('#p_agrs_f1_apply_filter').prop('disabled', true);
-        $('#agrs_f1_index div.sect_1 div.grid_panel').empty();
-        $('#p_agrs_f1_save_button').prop('disabled', true);
-        $('#p_agrs_f1_save_button').css('background-color', '#eee');
-        $('#agrs_f1_index div.sect_2 div.detail_panel').empty();
-
-        Nskd.Js.post(
-            '/Agrs/F1/Filter/GetDataForFilteredView',
-            'p_agrs_f1_filter_form',
-            agrsF1FilterRefreshSuccess,
-            $('#agrs_f1_index div.sect_1 div.grid_panel'),
-            '_layout_footer_loading');
-    }
-
-    function agrsF1FilterRefreshSuccess() {
-        $('#p_agrs_f1_apply_filter').prop('disabled', false);
-        $('#p_agrs_f1_save_button').prop('disabled', true);
-        $('#p_agrs_f1_save_button').css('background-color', '#eee');
-        $('#p_agrs_f1_add_button').prop('disabled', false);
-        $('#p_agrs_f1_add_button').css('background-color', '#eee');
-        $('#p_agrs_f1_del_button').prop('disabled', false);
-        $('#p_agrs_f1_del_button').css('background-color', '#eee');
-    }
+    var ArgsViewsF1Filter = (function () {
+        var main = $('#args_views_f1_filter');
+        main.find('input.date').change(function () { this.value = Nskd.Validator.dateNorm(this.value); });
+        main.find('input.n2').change(function () { this.value = Nskd.Validator.numberNorm(this.value); });
+        function clearForm() {
+            $('#p_agrs_f1_apply_filter').prop('disabled', true);
+            $('#agrs_f1_index div.sect_1 div.grid_panel').empty();
+            $('#p_agrs_f1_save_button').prop('disabled', true);
+            $('#p_agrs_f1_save_button').css('background-color', '#eee');
+            $('#agrs_f1_index div.sect_2 div.detail_panel').empty();
+        }
+        function setCommandButtons() {
+            $('#p_agrs_f1_apply_filter').prop('disabled', false);
+            $('#p_agrs_f1_save_button').prop('disabled', true);
+            $('#p_agrs_f1_save_button').css('background-color', '#eee');
+            $('#p_agrs_f1_add_button').prop('disabled', false);
+            $('#p_agrs_f1_add_button').css('background-color', '#eee');
+            $('#p_agrs_f1_del_button').prop('disabled', false);
+            $('#p_agrs_f1_del_button').css('background-color', '#eee');
+        }
+        return {
+            apply: function () {
+                clearForm();
+                var rqp = { Parameters: [] };
+                main.find('table tr').each(function (index, element) {
+                    var tds = $(this).find('td');
+                    if (tds.length == 2) {
+                        rqp.Parameters.push(
+                            { Name: $(tds[0]).text(), Value: $(tds[1]).find('input').val() }
+                        );
+                    }
+                    if (tds.length == 4) {
+                        rqp.Parameters.push(
+                            { Name: $(tds[0]).text() + '.min', Value: $(tds[1]).find('input').val() }
+                        );
+                        rqp.Parameters.push(
+                            { Name: $(tds[0]).text() + '.max', Value: $(tds[3]).find('input').val() }
+                        );
+                    }
+                });
+                Nskd.Http.post({
+                    url: '/Agrs/F1/Filter/GetDataForFilteredView',
+                    rqp: rqp,
+                    done: function (data) {
+                        $('#agrs_f1_index div.sect_1 div.grid_panel').html(data);
+                        setCommandButtons();
+                    }
+                });
+            }
+        };
+    })();
 </script>

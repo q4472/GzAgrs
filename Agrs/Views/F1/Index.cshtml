@@ -31,7 +31,7 @@
                 position: absolute;
                 left: 0px;
                 top: 0px;
-                width: 360px;
+                width: 320px;
                 height: 100%;
                 overflow: hidden;
                 float: left;
@@ -40,7 +40,7 @@
             #agrs_f1_index div.sect_1 div.grid_panel {
                 position: absolute;
                 top: 0px;
-                left: 360px;
+                left: 320px;
                 right: 0px;
                 height: 100%;
                 overflow: hidden;
@@ -74,7 +74,7 @@
     <div class="sect_1">
         <div style="position: relative; width: 100%; height: 100%;">
             <div class="filter_panel">
-                @{ Html.RenderPartial("~/Views/F1/Filter.cshtml", Model.filterTable); }
+                @{ Html.RenderPartial("~/Views/F1/Filter.cshtml"); }
             </div>
             <div class="grid_panel">
                 @{ Html.RenderPartial("~/Views/F1/FilteredView.cshtml", Model); }

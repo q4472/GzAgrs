@@ -27,12 +27,8 @@ namespace FarmSib.AreasAgrs.Areas.Agrs.Controllers
         public Object GetDataForFilteredView()
         {
             Object result = null;
-            Dictionary<String, String> fs = new Dictionary<String, String>(Request.Form.Count);
-            for (int i = 0; i < Request.Form.Count; i++)
-            {
-                fs.Add(Request.Form.Keys[i], Request.Form.GetValues(i)[0]);
-            }
-            F1Model m = new F1Model(fs);
+            var rqp = RequestPackage.ParseRequest(Request.InputStream, Request.ContentEncoding);
+            F1Model m = new F1Model(rqp);
             result = PartialView("~/Views/F1/FilteredView.cshtml", m);
             return result;
         }

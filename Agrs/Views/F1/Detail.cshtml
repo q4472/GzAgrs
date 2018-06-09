@@ -69,18 +69,18 @@
         </table>
     }
     -->
-    @if ((Model.workingData != null) && (Model.workingData.Rows.Count > 0))
+    @if ((Model.WorkingData != null) && (Model.WorkingData.Rows.Count > 0))
     {
-        NpcDataRow row = Model.workingData.Rows[0];
+        NpcDataRow row = Model.WorkingData.Rows[0];
         <br />
         <form id="p_agrs_f1_detail_form" novalidate="novalidate">
             <table>
                 <tr>
                     <td>
                         <table>
-                            @for (int ci = 0; ci < Math.Min(Model.workingData.Columns.Count, 12); ci++)
+                            @for (int ci = 0; ci < Math.Min(Model.WorkingData.Columns.Count, 12); ci++)
                             {
-                                NpcDataColumn col = Model.workingData.Columns[ci];
+                                NpcDataColumn col = Model.WorkingData.Columns[ci];
                                 String hidden = ((Boolean)col.ExtendedProperties["hidden"]) ? "display: none;" : "";
                                 <tr style="height: 24px; @hidden">
                                     <td style="text-align: right; width: 200px; padding: 2px;">
@@ -95,9 +95,9 @@
                     </td>
                     <td>
                         <table>
-                            @for (int ci = 12; ci < Model.workingData.Columns.Count; ci++)
+                            @for (int ci = 12; ci < Model.WorkingData.Columns.Count; ci++)
                             {
-                                NpcDataColumn col = Model.workingData.Columns[ci];
+                                NpcDataColumn col = Model.WorkingData.Columns[ci];
                                 String hidden = ((Boolean)col.ExtendedProperties["hidden"]) ? "display: none;" : "";
                                 <tr style="height: 24px; @hidden">
                                     <td style="text-align: right; width: 200px; padding: 2px;">
