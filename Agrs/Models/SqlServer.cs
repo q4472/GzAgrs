@@ -1,10 +1,10 @@
-﻿using FarmSib.Base.Data;
+﻿using Base.Data;
 using Nskd;
 using System;
 using System.Collections.Generic;
 using System.Data;
 
-namespace FarmSib.AreasAgrs.Areas.Agrs.Models
+namespace AreasAgrs.Areas.Agrs.Models
 {
     public class Ss //: IDisposable
     {

@@ -40,7 +40,7 @@
         $('#p_agrs_f1_del_button').css('background-color', '#eee');
 
         // очистить все поля для ввода
-        $('#p_agrs_f1_detail input[type="text"]')
+        $('#agrs_views_f1_detail input[type="text"]')
             .val('')
             .css('background-color', '#fff');
 
@@ -50,27 +50,27 @@
 
         // выбрать начальное значение для поля "№ п/п (внутр)" f2
         var newNum = '{next}-' + ((new Date()).getFullYear() - 2000);
-        $('#p_agrs_f1_detail input[data-dbname="f2"] ').val(newNum);
+        $('#agrs_views_f1_detail input[data-dbname="f2"] ').val(newNum);
 
         // выбрать начальное значение для поля "Дата внесения в реестр" f7
         var now = new Date();
         var month = now.getMonth() + 1;
         var date = now.getDate();
         var newdate = now.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + (date < 10 ? '0' : '') + date;
-        $('#p_agrs_f1_detail input[data-dbname="f7"] ').val(newdate);
+        $('#agrs_views_f1_detail input[data-dbname="f7"] ').val(newdate);
 
         // выбрать начальное значение для поля "Контрольная дата возврата" f8
         var check = now.setDate(now.getDate() + 50);
         month = now.getMonth() + 1;
         date = now.getDate();
         checkdate = now.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + (date < 10 ? '0' : '') + date;
-        $('#p_agrs_f1_detail input[data-dbname="f8"] ').val(checkdate);
+        $('#agrs_views_f1_detail input[data-dbname="f8"] ').val(checkdate);
 
     }
     function agrsF1DelButtonClick() {
         if (confirm('Удалить запись о договоре?')) {
             var data = 'cmd=delete';
-            $('#p_agrs_f1_detail input[type="text"]').each(function (index, element) {
+            $('#agrs_views_f1_detail input[type="text"]').each(function (index, element) {
                 data += '&f' + index.toString() + '=' + escape($(element).val());
             });
             //alert(data);

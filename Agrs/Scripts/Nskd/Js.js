@@ -115,6 +115,7 @@ Nskd.Validator = (function () {
                 v = element.getAttribute('data-val-number'); if (v != null) { $e.rules('add', { number: true }); }
             });
         },
+
         dateNorm: function (str) {
 
             if (!Nskd.Js.is(str, 'string') || str.length == 0) { return ''; }
@@ -173,6 +174,12 @@ Nskd.Validator = (function () {
             y = ((y < 50) ? 2000 + y : ((y < 100) ? 1900 + y : y));
             return ('' + y + '-' + ((m < 10) ? '0' + m : m) + '-' + ((d < 10) ? '0' + d : d));
         },
+        dNorm: function (element, format) {
+            if (element.nodeName == 'INPUT') {
+                element.value = Nskd.Validator.dateNorm(element.value);
+            }
+        },
+
         numberNorm: function (str) {
             str = str.replace(/,/g, '.');
             str = str.replace(/[^\d\.-]/g, '');
@@ -210,6 +217,5 @@ Nskd.Validator = (function () {
             element.value = v;
         }
 }
-
     }
 })();

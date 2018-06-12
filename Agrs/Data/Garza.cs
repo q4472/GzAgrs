@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 
-namespace FarmSib.AreasAgrs.Areas.Agrs.Data
+namespace AreasAgrs.Areas.Agrs.Data
 {
     class Env
     {

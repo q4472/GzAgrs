@@ -1,10 +1,10 @@
-﻿using FarmSib.AreasAgrs.Areas.Agrs.Models;
+﻿using AreasAgrs.Areas.Agrs.Models;
 using Nskd;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace FarmSib.AreasAgrs.Areas.Agrs.Controllers
+namespace AreasAgrs.Areas.Agrs.Controllers
 {
     public class F1Controller : Controller
     {

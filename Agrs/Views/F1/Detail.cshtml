@@ -1,130 +1,273 @@
-﻿@using Nskd
-@using FarmSib.AreasAgrs.Areas.Agrs.Models
-@model FarmSib.AreasAgrs.Areas.Agrs.Models.F1Model
+﻿@model AreasAgrs.Areas.Agrs.Models.F1Model
 <style type="text/css">
-    #p_agrs_f1_detail input {
+    #agrs_views_f1_detail table table td {
         padding: 2px;
     }
+
+        #agrs_views_f1_detail table table td:nth-child(1) {
+            text-align: right;
+        }
+
+        #agrs_views_f1_detail table table td input {
+            padding: 2px;
+        }
+
+            #agrs_views_f1_detail table table td input[type="text"] {
+                width: 200px;
+            }
 </style>
-<div id="p_agrs_f1_detail" style="width: 1095px; height:auto; overflow: hidden;">
-    <!--
-     if ((Model.NetSqlГарзаДоговоры != null) && (Model.NetSqlГарзаДоговоры.Rows.Count > 0))
+<style type="text/css">
+    #agrs_views_f1_detail div.modal_bg {
+        display: none;
+        position: fixed;
+        z-index: 100;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+        #agrs_views_f1_detail div.modal_bg div.modal_box {
+            width: 380px;
+            height: 320px;
+            border: 1px solid black;
+            padding: 2px;
+            background-color: #fff;
+            overflow: hidden;
+            margin: 15% auto;
+        }
+
+            #agrs_views_f1_detail div.modal_bg div.modal_box div.header span {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+                #agrs_views_f1_detail div.modal_bg div.modal_box div.header span:hover,
+                #agrs_views_f1_detail div.modal_bg div.modal_box div.header span:hover {
+                    color: black;
+                    cursor: pointer;
+                    text-decoration: none;
+                }
+
+            #agrs_views_f1_detail div.modal_bg div.modal_box div.content tr:nth-child(2n+1) {
+                background-color: #eee;
+            }
+
+            #agrs_views_f1_detail div.modal_bg div.modal_box div.content tr:hover {
+                background-color: #ff8;
+            }
+</style>
+<div id="agrs_views_f1_detail" style="width: 1095px; height:auto; overflow: hidden;">
+    @if ((Model.NetSqlГарзаДоговоры != null) && (Model.NetSqlГарзаДоговоры.Rows.Count > 0))
     {
+        Object v6 = Model.NetSqlГарзаДоговоры.Rows[0]["f6"];
+        Object v7 = Model.NetSqlГарзаДоговоры.Rows[0]["f7"];
+        Object v8 = Model.NetSqlГарзаДоговоры.Rows[0]["f8"];
+        Object v9 = Model.NetSqlГарзаДоговоры.Rows[0]["f9"];
+        Object v13 = Model.NetSqlГарзаДоговоры.Rows[0]["f13"];
+        Object v71 = Model.NetSqlГарзаДоговоры.Rows[0]["SP2283"];
         <br />
         <table>
             <tr>
-                <td>
+                <td class="c1">
                     <table>
                         <tr>
-                            <td>Вид контракта</td>
+                            <td>Вид контракта:</td>
                             <td>
                                 <select name="f1">
-                                     switch (Model.NetSqlГарзаДоговоры.Rows[0]["f1"] as String)
-                                    {
-                                        case "эл.аукцион":
-                                            <option value="эл.аукцион" selected="selected">эл.аукцион</option>
-                                            <option value="котировка">котировка</option>
-                                            <option value="комм./разовый">комм./разовый</option>
-                                            <option value="счёт-договор">счёт-договор</option>
-                                            break;
-                                        case "котировка":
-                                            <option value="эл.аукцион">эл.аукцион</option>
-                                            <option value="котировка" selected="selected">котировка</option>
-                                            <option value="комм./разовый">комм./разовый</option>
-                                            <option value="счёт-договор">счёт-договор</option>
-                                            break;
-                                        case "комм./разовый":
-                                            <option value="эл.аукцион">эл.аукцион</option>
-                                            <option value="котировка">котировка</option>
-                                            <option value="комм./разовый" selected="selected">комм./разовый</option>
-                                            <option value="счёт-договор">счёт-договор</option>
-                                            break;
-                                        case "счёт-договор":
-                                            <option value="эл.аукцион">эл.аукцион</option>
-                                            <option value="котировка">котировка</option>
-                                            <option value="комм./разовый">комм./разовый</option>
-                                            <option value="счёт-договор" selected="selected">счёт-договор</option>
-                                            break;
-                                        default:
-                                            <option value=""></option>
-                                            break;
+                                    <option value=""></option>
+                                    @{
+                                        String value = Model.NetSqlГарзаДоговоры.Rows[0]["f1"] as String;
+                                        if (value == "эл.аукцион")
+                                        {
+                                    <option value="эл.аукцион" selected="selected">эл.аукцион</option>
+                                        }
+                                        else
+                                        {
+                                    <option value="эл.аукцион">эл.аукцион</option>
+                                        }
+                                        if (value == "котировка")
+                                        {
+                                    <option value="котировка" selected="selected">котировка</option>
+                                        }
+                                        else
+                                        {
+                                    <option value="котировка">котировка</option>
+                                        }
+                                        if (value == "комм./разовый")
+                                        {
+                                    <option value="комм./разовый" selected="selected">комм./разовый</option>
+                                        }
+                                        else
+                                        {
+                                    <option value="комм./разовый">комм./разовый</option>
+                                        }
+                                        if (value == "счёт-договор")
+                                        {
+                                    <option value="счёт-договор" selected="selected">счёт-договор</option>
+                                        }
+                                        else
+                                        {
+                                    <option value="счёт-договор">счёт-договор</option>
+                                        }
                                     }
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td>№ п/п (внутр)</td>
-                            <td><input type="text" value=" Model.NetSqlГарзаДоговоры.Rows[0]["f2"]" /></td>
+                            <td>№ п/п (внутр):</td>
+                            <td><input type="text" name="f2" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f2"]" /></td>
+                        </tr>
+                        <tr>
+                            <td>№ договора (внешн.):</td>
+                            <td><input type="text" name="f3" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f3"]" /></td>
+                        </tr>
+                        <tr>
+                            <td>Наименование клиента:</td>
+                            <td>
+                                <input type="text" name="f4" data-code="" data-inn="" data-city="" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f4"]" />
+                                <input type="button" name="f4" value="..." onclick="AgrsViewsF1Detail.stackPanelButtonClick('Клиенты')" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Населённый пункт:</td>
+                            <td><input type="text" name="f5" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f5"]" /></td>
+                        </tr>
+                        <tr>
+                            <td>Дата договора:</td>
+                            <td><input type="text" name="f6" class="date" value="@((v6 is DateTime) ? ((DateTime)v6).ToString("yyyy-MM-dd") : "")" /></td>
+                        </tr>
+                        <tr>
+                            <td>Дата внесения в реестр:</td>
+                            <td><input type="text" name="f7" class="date" value="@((v7 is DateTime) ? ((DateTime)v7).ToString("yyyy-MM-dd") : "")" /></td>
+                        </tr>
+                        <tr>
+                            <td>Контрольная дата возврата:</td>
+                            <td><input type="text" name="f8" class="date" value="@((v8 is DateTime) ? ((DateTime)v8).ToString("yyyy-MM-dd") : "")" /></td>
+                        </tr>
+                        <tr>
+                            <td>Дата возврата:</td>
+                            <td><input type="text" name="f9" class="date" value="@((v9 is DateTime) ? ((DateTime)v9).ToString("yyyy-MM-dd") : "")" /></td>
                         </tr>
                     </table>
                 </td>
-                <td>
+                <td class="c2">
                     <table>
                         <tr>
-                            <td>q2</td>
+                            <td>Нал:</td>
+                            <td><input type="text" name="f10" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f10"]" /></td>
+                        </tr>
+                        <tr>
+                            <td>Менеджер:</td>
+                            <td>
+                                <input type="text" name="f12" data-code="" data-inn="" data-city="" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f12"]" />
+                                <input type="button" name="f12" value="..." onclick="AgrsViewsF1Detail.stackPanelButtonClick('Сотрудники')" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Сумма:</td>
+                            <td><input type="text" name="f13" class="n2" value="@((v13 is Double) ? ((Double)v13).ToString("n2") : "")" /></td>
+                        </tr>
+                        <tr>
+                            <td>№ торгов:</td>
+                            <td><input type="text" name="f15" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f15"]" /></td>
+                        </tr>
+                        <tr>
+                            <td>Комментарий:</td>
+                            <td><input type="text" name="f16" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f16"]" /></td>
+                        </tr>
+                        <tr>
+                            <td>Дата окончания:</td>
+                            <td><input type="text" name="SP2283" class="date" value="@((v71 is DateTime) ? ((DateTime)v71).ToString("yyyy-MM-dd") : "")" /></td>
+                        </tr>
+                        <tr>
+                            <td>Отсрочка платежа:</td>
+                            <td><input type="text" name="SP3581" class="n0" value="@Model.NetSqlГарзаДоговоры.Rows[0]["SP3581"]" /></td>
+                        </tr>
+                        <tr>
+                            <td>Пролонгация:</td>
+                            <td><input type="text" name="SP3578" value="@Model.NetSqlГарзаДоговоры.Rows[0]["SP3578"]" /></td>
+                        </tr>
+                        <tr>
+                            <td>Гос. идентификатор:</td>
+                            <td><input type="text" name="f17" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f17"]" /></td>
                         </tr>
                     </table>
                 </td>
             </tr>
         </table>
-    }
-    -->
-    @if ((Model.WorkingData != null) && (Model.WorkingData.Rows.Count > 0))
-    {
-        NpcDataRow row = Model.WorkingData.Rows[0];
-        <br />
-        <form id="p_agrs_f1_detail_form" novalidate="novalidate">
-            <table>
-                <tr>
-                    <td>
-                        <table>
-                            @for (int ci = 0; ci < Math.Min(Model.WorkingData.Columns.Count, 12); ci++)
-                            {
-                                NpcDataColumn col = Model.WorkingData.Columns[ci];
-                                String hidden = ((Boolean)col.ExtendedProperties["hidden"]) ? "display: none;" : "";
-                                <tr style="height: 24px; @hidden">
-                                    <td style="text-align: right; width: 200px; padding: 2px;">
-                                        @{ Html.RenderPartial("DetailFields/Caption", Model, new ViewDataDictionary() { new KeyValuePair<String, Object>("ci", ci) }); }
-                                    </td>
-                                    <td>
-                                        @{ Html.RenderPartial("DetailFields/Value", Model, new ViewDataDictionary() { new KeyValuePair<String, Object>("ci", ci) }); }
-                                    </td>
-                                </tr>
-                                            }
-                        </table>
-                    </td>
-                    <td>
-                        <table>
-                            @for (int ci = 12; ci < Model.WorkingData.Columns.Count; ci++)
-                            {
-                                NpcDataColumn col = Model.WorkingData.Columns[ci];
-                                String hidden = ((Boolean)col.ExtendedProperties["hidden"]) ? "display: none;" : "";
-                                <tr style="height: 24px; @hidden">
-                                    <td style="text-align: right; width: 200px; padding: 2px;">
-                                        @{ Html.RenderPartial("DetailFields/Caption", Model, new ViewDataDictionary() { new KeyValuePair<String, Object>("ci", ci) }); }
-                                    </td>
-                                    <td>
-                                        @{ Html.RenderPartial("DetailFields/Value", Model, new ViewDataDictionary() { new KeyValuePair<String, Object>("ci", ci) }); }
-                                    </td>
-                                </tr>
-                                            }
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </form>
-                                            }
+                                        }
+    <div class="modal_bg" style="display: none;">
+        <div class="modal_box">
+            <div class="modal_header">
+                <span onclick="$(this.parentNode.parentNode.parentNode).hide();">&times</span>
+            </div>
+            <div class="modal_content">
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
-
-    Nskd.Validator.parse('#p_agrs_f1_detail_form');
-
-    $('#p_agrs_f1_detail input').change(function (event) {
-        agrsF1DetailFieldChange(this);
-    });
-    function agrsF1DetailFieldChange(element) {
-        $(element).css('background-color', '#cfc');
-        $('#p_agrs_f1_save_button').css('background-color', '#cfc');
-        $('#p_agrs_f1_save_button').prop('disabled', false);
-    }
+    var AgrsViewsF1Detail = (function () {
+        var main = $('#agrs_views_f1_detail');
+        var modalBG = main.find('div.modal_bg');
+        var modalContent = main.find('div.modal_content');
+        main.find('input').change(function () { fieldChange(this); });
+        main.find('input.date').change(function () { Nskd.Validator.dNorm(this); });
+        main.find('input.n2').change(function () { Nskd.Validator.nNorm(this, 2); });
+        main.find('input.n0').change(function () { Nskd.Validator.nNorm(this, 0); });
+        function fieldChange(element) {
+            $(element).css('background-color', '#cfc');
+            $('#p_agrs_f1_save_button').css('background-color', '#cfc');
+            $('#p_agrs_f1_save_button').prop('disabled', false);
+        }
+        return {
+            stackPanelButtonClick: function (tableName) {
+                // если что-то введено в TextBox, то использовать как фильтр
+                var filter;
+                if (tableName == 'Клиенты') filter = main.find('input[type="text"][name="f4"]');
+                else filter = main.find('input[type="text"][name="f12"]'); // Сотрудники
+                var rqp = {
+                    Parameters: [
+                        { Name: 'tableName', Value: tableName },
+                        { Name: 'filter', Value: filter.val() }
+                    ]
+                };
+                //alert(Nskd.Json.toString(rqp));
+                Nskd.Http.post({
+                    url: '/Agrs/F1/SelectorWithListBox/GetData',
+                    rqp: rqp,
+                    done: function (data) {
+                        //alert(data);
+                        modalContent.html(data);
+                        // на все строчки вешаем обработчик
+                        modalContent.find('tr').click(function () {
+                            var tr = $(this);
+                            // первая ячейка - код. Переписываем его в атрибут.
+                            filter.attr('data-code', tr.find('td:eq(0)').text());
+                            // вторая ячейка - описание. Переписываем его в текстовое поле.
+                            filter.val(tr.find('td:eq(1)').text());
+                            // третья ячейка - инн. Переписываем его в атрибут.
+                            filter.attr('data-inn', tr.find('td:eq(2)').text());
+                            // четвётая ячейка - город. Переписываем его в атрибут.
+                            filter.attr('data-city', tr.find('td:eq(3)').text());
+                            // Переносим город, если он есть, в поле "Город (населённый пункт) в родительской форме"
+                            if (filter.attr('data-city')) {
+                                $('input[type="text"][name="f5"]').val(filter.attr('data-city'));
+                            }
+                            // выбор сделан. Убираем список.
+                            modalBG.hide();
+                        });
+                    }
+                });
+                modalContent.html('<span>Выполняется загрузка данных. Пожалуйста подождите.</span>');
+                modalBG.show();
+            }
+        };
+    })();
 </script>

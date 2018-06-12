@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FarmSib.AreasAgrs.Areas.Agrs.Models
+namespace AreasAgrs.Areas.Agrs.Models
 {
     public class SsAgrTable
     {
