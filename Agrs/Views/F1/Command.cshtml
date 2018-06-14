@@ -1,86 +1,96 @@
-﻿<div>
+﻿<div id="agrs_views_f1_command">
     <br />
     <input type="button"
            id="p_agrs_f1_save_button" value="Сохранить" disabled="disabled"
-           onclick="agrsF1SaveButtonClick();" />
+           onclick="AgrsViewsF1Command.saveButtonClick();" />
     <br />
     <br />
     <input type="button"
            id="p_agrs_f1_add_button" value="Добавить" disabled="disabled"
-           onclick="agrsF1AddButtonClick();" />
+           onclick="AgrsViewsF1Command.addButtonClick();" />
     <br />
     <br />
     <input type="button"
            id="p_agrs_f1_del_button" value="Удалить" disabled="disabled"
-           onclick="agrsF1DelButtonClick();" />
+           onclick="AgrsViewsF1Command.delButtonClick();" />
 </div>
 <script type="text/javascript">
-    function agrsF1SaveButtonClick() {
+    var AgrsViewsF1Command = (function () {
+        return {
+            saveButtonClick: function () {
+                $('#p_agrs_f1_save_button').prop('disabled', true);
+                $('#p_agrs_f1_save_button').css('background-color', '#eee');
+                var rqp = {
+                    Command: 'save',
+                    Parameters: []
+                };
+                $('#agrs_views_f1_detail input[type="hidden"], #agrs_views_f1_detail select, #agrs_views_f1_detail input[type="text"]').each(function (index, element) {
+                    rqp.Parameters.push({ Name: element.getAttribute('name'), Value: $(element).val() });
+                });
+                Nskd.Http.post({
+                    url: '/Agrs/F1/Save',
+                    rqp: rqp,
+                    done: function (data) {
+                        ArgsViewsF1Filter.apply();
+                    }
+                });
+            },
+            addButtonClick: function () {
 
-        $('#p_agrs_f1_detail_form input[type="text"]').each(function (index, element) {
-            element.name = 'f' + index;
-        });
-        $('#p_agrs_f1_detail_form input[type="text"][data-code]').each(function (index, element) {
-            $('#p_agrs_f1_detail_form').append('<input type="text" name="c' + index + '" value="' + escape($(element).attr('data-code')) + '" style="display: none;" />');
-        });
+                $('#p_agrs_f1_save_button').prop('disabled', true);
+                $('#p_agrs_f1_save_button').css('background-color', '#eee');
+                $('#p_agrs_f1_add_button').prop('disabled', true);
+                $('#p_agrs_f1_add_button').css('background-color', '#cfc');
+                $('#p_agrs_f1_del_button').prop('disabled', true);
+                $('#p_agrs_f1_del_button').css('background-color', '#eee');
 
-        $('#p_agrs_f1_detail_form').append('<input type="text" name="cmd" value="save" style="display: none;" />');
+                // очистить все поля для ввода
+                $('#agrs_views_f1_detail input[type="hidden"], #agrs_views_f1_detail input[type="text"]')
+                    .val('')
+                    .css('background-color', '#fff');
 
-        Nskd.Js.post('/Agrs/F1/Save', 'p_agrs_f1_detail_form', agrsF1FilterRefresh, null, '_layout_footer_loading');
+                // выбрать начальное значение для поля "Вид контракта" f1
+                $('#agrs_views_f1_detail select option:eq(0)').prop('selected', true);
 
-        $('#p_agrs_f1_save_button').prop('disabled', true);
-        $('#p_agrs_f1_save_button').css('background-color', '#eee');
-    }
-    function agrsF1AddButtonClick() {
-        $('#p_agrs_f1_save_button').prop('disabled', true);
-        $('#p_agrs_f1_save_button').css('background-color', '#eee');
-        $('#p_agrs_f1_add_button').prop('disabled', true);
-        $('#p_agrs_f1_add_button').css('background-color', '#cfc');
-        $('#p_agrs_f1_del_button').prop('disabled', true);
-        $('#p_agrs_f1_del_button').css('background-color', '#eee');
+                // выбрать начальное значение для поля "№ п/п (внутр)" f2
+                var newNum = '{next}-' + ((new Date()).getFullYear() - 2000);
+                $('#agrs_views_f1_detail input[name="f2"] ').val(newNum);
 
-        // очистить все поля для ввода
-        $('#agrs_views_f1_detail input[type="text"]')
-            .val('')
-            .css('background-color', '#fff');
+                // выбрать начальное значение для поля "Дата внесения в реестр" f7
+                var now = new Date();
+                var month = now.getMonth() + 1;
+                var date = now.getDate();
+                var newdate = now.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + (date < 10 ? '0' : '') + date;
+                $('#agrs_views_f1_detail input[name="f7"]').val(newdate);
 
-        // выбрать начальное значение для поля "Вид контракта" f1
-        $('#p_agrs_f1_enu1').val('эл.аукцион');
-        $('#p_agrs_f1_enu1_select option:eq(0)').attr('selected', 'selected');
-
-        // выбрать начальное значение для поля "№ п/п (внутр)" f2
-        var newNum = '{next}-' + ((new Date()).getFullYear() - 2000);
-        $('#agrs_views_f1_detail input[data-dbname="f2"] ').val(newNum);
-
-        // выбрать начальное значение для поля "Дата внесения в реестр" f7
-        var now = new Date();
-        var month = now.getMonth() + 1;
-        var date = now.getDate();
-        var newdate = now.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + (date < 10 ? '0' : '') + date;
-        $('#agrs_views_f1_detail input[data-dbname="f7"] ').val(newdate);
-
-        // выбрать начальное значение для поля "Контрольная дата возврата" f8
-        var check = now.setDate(now.getDate() + 50);
-        month = now.getMonth() + 1;
-        date = now.getDate();
-        checkdate = now.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + (date < 10 ? '0' : '') + date;
-        $('#agrs_views_f1_detail input[data-dbname="f8"] ').val(checkdate);
-
-    }
-    function agrsF1DelButtonClick() {
-        if (confirm('Удалить запись о договоре?')) {
-            var data = 'cmd=delete';
-            $('#agrs_views_f1_detail input[type="text"]').each(function (index, element) {
-                data += '&f' + index.toString() + '=' + escape($(element).val());
-            });
-            //alert(data);
-            $.post('/Agrs/F1/Save', data, function (data) {
-                alert(data);
-                agrsF1FilterRefresh();
-            });
-            $('#p_agrs_f1_del_button').prop('disabled', true);
-            $('#agrs_f1_index div.sect_2 div.detail_panel').empty();
-            $('#agrs_f1_index div.sect_1 div.grid_panel').empty();
-        }
-    }
+                // выбрать начальное значение для поля "Контрольная дата возврата" f8
+                var check = now.setDate(now.getDate() + 50);
+                month = now.getMonth() + 1;
+                date = now.getDate();
+                checkdate = now.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + (date < 10 ? '0' : '') + date;
+                $('#agrs_views_f1_detail input[name="f8"] ').val(checkdate);
+            },
+            delButtonClick: function () {
+                if (confirm('Удалить запись о договоре?')) {
+                    var rqp = {
+                        Command: 'delete',
+                        Parameters: [
+                            { Name: 'f0', Value: $('#agrs_views_f1_detail input[name="f0"]').val() },
+                            { Name: 'f14', Value: $('#agrs_views_f1_detail input[name="f14"]').val() }
+                        ]
+                    };
+                    Nskd.Http.post({
+                        url: '/Agrs/F1/Save',
+                        rqp: rqp,
+                        done: function (data) {
+                            ArgsViewsF1Filter.apply();
+                        }
+                    });
+                    $('#p_agrs_f1_del_button').prop('disabled', true);
+                    $('#agrs_f1_index div.sect_2 div.detail_panel').empty();
+                    $('#agrs_f1_index div.sect_1 div.grid_panel').empty();
+                }
+            }
+        };
+    })();
 </script>

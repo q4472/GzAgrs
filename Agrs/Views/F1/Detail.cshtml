@@ -70,7 +70,9 @@
         Object v8 = Model.NetSqlГарзаДоговоры.Rows[0]["f8"];
         Object v9 = Model.NetSqlГарзаДоговоры.Rows[0]["f9"];
         Object v13 = Model.NetSqlГарзаДоговоры.Rows[0]["f13"];
-        Object v71 = Model.NetSqlГарзаДоговоры.Rows[0]["SP2283"];
+        Object v71 = Model.NetSqlГарзаДоговоры.Rows[0]["ДатаОкончания"];
+        <input type="hidden" name="f0" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f0"]" />
+        <input type="hidden" name="f14" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f14"]" />
         <br />
         <table>
             <tr>
@@ -182,20 +184,20 @@
                             <td><input type="text" name="f16" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f16"]" /></td>
                         </tr>
                         <tr>
+                            <td>Гос. идентификатор:</td>
+                            <td><input type="text" name="f17" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f17"]" /></td>
+                        </tr>
+                        <tr>
                             <td>Дата окончания:</td>
-                            <td><input type="text" name="SP2283" class="date" value="@((v71 is DateTime) ? ((DateTime)v71).ToString("yyyy-MM-dd") : "")" /></td>
+                            <td><input type="text" name="ДатаОкончания" class="date" value="@((v71 is DateTime) ? ((DateTime)v71).ToString("yyyy-MM-dd") : "")" /></td>
                         </tr>
                         <tr>
                             <td>Отсрочка платежа:</td>
-                            <td><input type="text" name="SP3581" class="n0" value="@Model.NetSqlГарзаДоговоры.Rows[0]["SP3581"]" /></td>
+                            <td><input type="text" name="ОтсрочкаПлатежа" class="n0" value="@Model.NetSqlГарзаДоговоры.Rows[0]["ОтсрочкаПлатежа"]" /></td>
                         </tr>
                         <tr>
                             <td>Пролонгация:</td>
-                            <td><input type="text" name="SP3578" value="@Model.NetSqlГарзаДоговоры.Rows[0]["SP3578"]" /></td>
-                        </tr>
-                        <tr>
-                            <td>Гос. идентификатор:</td>
-                            <td><input type="text" name="f17" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f17"]" /></td>
+                            <td><input type="text" name="Пролонгация" value="@Model.NetSqlГарзаДоговоры.Rows[0]["Пролонгация"]" /></td>
                         </tr>
                     </table>
                 </td>

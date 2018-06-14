@@ -76,37 +76,13 @@ namespace AreasAgrs.Areas.Agrs.Data
     }
     class GarzaSql
     {
-        public static DataTable F1GetДоговоры(Dictionary<String, String> pars)
+        public static DataTable F1GetДоговоры(RequestPackage rqp = null)
         {
             DataTable dt = null;
-            RequestPackage rqp = new RequestPackage();
-            rqp.Command = "[dbo].[договоры_покупатели_select_1]";
-            if (pars != null)
+            RequestPackage rqp1 = new RequestPackage
             {
-                rqp.Parameters = new RequestParameter[pars.Count];
-                int pi = 0;
-                foreach (var p in pars)
-                {
-                    String v = p.Value;
-                    if (!String.IsNullOrWhiteSpace(v))
-                    {
-                        rqp.Parameters[pi++] = new RequestParameter(p.Key, v);
-                    }
-                    else
-                    {
-                        rqp.Parameters[pi++] = new RequestParameter(p.Key, null);
-                    }
-                }
-            }
-            dt = GetFirstTable(Execute12(rqp));
-            return dt;
-        }
-
-        public static DataTable F1GetДоговоры(RequestPackage rqp)
-        {
-            DataTable dt = null;
-            RequestPackage rqp1 = new RequestPackage();
-            rqp1.Command = "[dbo].[договоры_покупатели_select_1]";
+                Command = "[dbo].[договоры_покупатели_select_2]"
+            };
             if (rqp != null && rqp.Parameters != null && rqp.Parameters.Length > 0)
             {
                 rqp1.Parameters = new RequestParameter[0];
@@ -115,6 +91,7 @@ namespace AreasAgrs.Areas.Agrs.Data
                     String name = null;
                     switch (p.Name)
                     {
+                        case "f0": name = "f0"; break;
                         case "Вид контракта:": name = "f1"; break;
                         case "№ п/п (внутр):": name = "f2"; break;
                         case "№ договора:": name = "f3"; break;
@@ -138,6 +115,24 @@ namespace AreasAgrs.Areas.Agrs.Data
             return dt;
         }
 
+        public static DataTable F1GetДоговоры(String f0)
+        {
+            DataTable dt = null;
+            if (!String.IsNullOrWhiteSpace(f0))
+            {
+                RequestPackage rqp = new RequestPackage
+                {
+                    Command = "[dbo].[договоры_покупатели_select_2]",
+                    Parameters = new RequestParameter[]
+                    {
+                        new RequestParameter { Name = "f0", Value = f0 }
+                    }
+                };
+                dt = GetFirstTable(Execute12(rqp));
+            }
+            return dt;
+        }
+
         private static DataTable GetFirstTable(DataSet ds)
         {
             DataTable dt = null;
@@ -148,7 +143,7 @@ namespace AreasAgrs.Areas.Agrs.Data
             return dt;
         }
 
-        private static DataSet Execute12(RequestPackage rqp)
+        public static DataSet Execute12(RequestPackage rqp)
         {
             ResponsePackage rsp = rqp.GetResponse("http://" + Env.dataServicesHost + ":11012/");
             return rsp.Data;

@@ -10,59 +10,47 @@ namespace AreasAgrs.Areas.Agrs.Controllers
     {
         public Object Index(String sessionId)
         {
-            F1Model m = new F1Model(sessionId);
+            F1Model m = new F1Model();
             return View("~/Views/F1/Index.cshtml", m);
+        }
+
+        public Object GetDataForFilteredView()
+        {
+            var rqp = RequestPackage.ParseRequest(Request.InputStream, Request.ContentEncoding);
+            F1Model m = new F1Model(rqp);
+            var view = PartialView("~/Views/F1/FilteredView.cshtml", m);
+            return view;
+        }
+
+        public Object GetDataForDetailSection()
+        {
+            var rqp = RequestPackage.ParseRequest(Request.InputStream, Request.ContentEncoding);
+            F1Model m = new F1Model(rqp["f0"] as String);
+            var view = PartialView("~/Views/F1/Detail.cshtml", m);
+            return view;
         }
 
         public Object GetDataForSelectorWithListBox()
         {
             var rqp = RequestPackage.ParseRequest(Request.InputStream, Request.ContentEncoding);
-            var tableName = rqp["tableName"] as String;
-            var filter = rqp["filter"] as String;
-            Object dt = F1Model.GetDataForSelectorWithListBox(tableName, filter);
+            Object dt = F1Model.GetDataForSelectorWithListBox(rqp);
             PartialViewResult r = PartialView("~/Views/F1/DetailFields/ListBox1.cshtml", dt);
             return r;
-        }
-
-        public Object GetDataForFilteredView()
-        {
-            Object result = null;
-            var rqp = RequestPackage.ParseRequest(Request.InputStream, Request.ContentEncoding);
-            F1Model m = new F1Model(rqp);
-            result = PartialView("~/Views/F1/FilteredView.cshtml", m);
-            return result;
-        }
-
-        public Object GetDataForDetailSection()
-        {
-            Dictionary<String, String> fs = new Dictionary<String, String>(Request.Form.Count);
-            for (int i = 0; i < Request.Form.Count; i++)
-            {
-                fs.Add(Request.Form.Keys[i], Request.Form.GetValues(i)[0]);
-            }
-            F1Model m = new F1Model(fs);
-            m.LoadDictionariesAndFillPopups();
-            var view = PartialView("~/Views/F1/Detail.cshtml", m);
-            return view;
         }
 
         public Object Save()
         {
             String status = null;
-            Dictionary<String, String> pars = new Dictionary<String, String>(Request.Form.Count);
-            for (int i = 0; i < Request.Form.Count; i++)
+            var rqp = RequestPackage.ParseRequest(Request.InputStream, Request.ContentEncoding);
+            if (rqp != null)
             {
-                pars.Add(Request.Form.Keys[i], Request.Form.GetValues(i)[0]);
-            }
-            if ((pars != null) && pars.ContainsKey("cmd"))
-            {
-                switch (pars["cmd"])
+                switch (rqp.Command)
                 {
                     case "save":
-                        status = F1Model.Upsert(pars);
+                        status = F1Model.Upsert(rqp);
                         break;
                     case "delete":
-                        status = F1Model.Delete(pars);
+                        status = F1Model.Delete(rqp);
                         break;
                     default:
                         break;
