@@ -1,10 +1,10 @@
-﻿using AreasAgrs.Areas.Agrs.Models;
+﻿using Agrs.Models;
 using Nskd;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace AreasAgrs.Areas.Agrs.Controllers
+namespace Agrs.Controllers
 {
     public class F1Controller : Controller
     {
@@ -34,7 +34,7 @@ namespace AreasAgrs.Areas.Agrs.Controllers
         {
             var rqp = RequestPackage.ParseRequest(Request.InputStream, Request.ContentEncoding);
             Object dt = F1Model.GetDataForSelectorWithListBox(rqp);
-            PartialViewResult r = PartialView("~/Views/F1/DetailFields/ListBox1.cshtml", dt);
+            PartialViewResult r = PartialView("~/Views/F1/ListBox1.cshtml", dt);
             return r;
         }
 

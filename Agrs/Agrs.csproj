@@ -146,7 +146,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\F1Controller.cs" />
-    <Compile Include="Data\HomeData.cs" />
+    <Compile Include="Data\F1HomeData.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -241,7 +241,7 @@
     <Content Include="Views\F1\Filter.cshtml" />
     <Content Include="Views\F1\Detail.cshtml" />
     <Content Include="Views\F1\Command.cshtml" />
-    <Content Include="Views\F1\DetailFields\ListBox1.cshtml" />
+    <Content Include="Views\F1\ListBox1.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\LeftSection.cshtml" />
   </ItemGroup>

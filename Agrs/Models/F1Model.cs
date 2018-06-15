@@ -1,30 +1,27 @@
-﻿using Base.Data;
+﻿using Agrs.Data;
 using Nskd;
 using System;
-using System.Collections.Generic;
 using System.Data;
 
-namespace AreasAgrs.Areas.Agrs.Models
+namespace Agrs.Models
 {
     public class F1Model
     {
         public DataTable NetSqlГарзаДоговоры { get; private set; }
-
-        // заход при первом обращении (без фильтра)
         public F1Model()
         {
-            NetSqlГарзаДоговоры = GarzaSql.F1GetДоговоры();
+            // заход при первом обращении (без фильтра)
+            NetSqlГарзаДоговоры = F1HomeData.F1GetДоговоры();
         }
-
-        // заход с фильтром или по "f0" для "detail" или по полям фильтра для "filtered_view"
         public F1Model(RequestPackage rqp)
         {
-            NetSqlГарзаДоговоры = GarzaSql.F1GetДоговоры(rqp);
+            // заход с фильтром для "filtered_view"
+            NetSqlГарзаДоговоры = F1HomeData.F1GetДоговоры(rqp);
         }
-
         public F1Model(String f0)
         {
-            NetSqlГарзаДоговоры = GarzaSql.F1GetДоговоры(f0);
+            // заход с 'id' для 'detail'
+            NetSqlГарзаДоговоры = F1HomeData.F1GetДоговоры(f0);
             if (NetSqlГарзаДоговоры != null && NetSqlГарзаДоговоры.Rows.Count > 0)
             {
                 NetSqlГарзаДоговоры.Columns.Add("ДатаОкончания", typeof(DateTime));
@@ -37,14 +34,13 @@ namespace AreasAgrs.Areas.Agrs.Models
                 }
             }
         }
-
         private void ДозагрузитьДанныеИз1сГарза(String code)
         {
             try
             {
                 if (NetSqlГарзаДоговоры != null && NetSqlГарзаДоговоры.Rows.Count > 0)
                 {
-                    DataTable dt = Garza1Cv77.F1GetAgrByCode(code);
+                    DataTable dt = F1HomeData.F1GetAgrByCode(code);
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         NetSqlГарзаДоговоры.Rows[0]["ДатаОкончания"] = dt.Rows[0]["ДатаОкончания"];
@@ -55,7 +51,6 @@ namespace AreasAgrs.Areas.Agrs.Models
             }
             catch (Exception e) { Console.WriteLine(e); }
         }
-
         public static DataTable GetDataForSelectorWithListBox(RequestPackage rqp)
         {
             DataTable dt = null;
@@ -65,74 +60,75 @@ namespace AreasAgrs.Areas.Agrs.Models
             {
                 case "Клиенты":
                 case "Представители":
-                    dt = Data.Garza1Cv77.F1GetCustTable(filter);
+                    dt = F1HomeData.F1GetCustTable(filter);
                     break;
                 case "Сотрудники":
-                    dt = Data.Garza1Cv77.F1GetStuffTable(filter);
+                    dt = F1HomeData.F1GetStuffTable(filter);
                     break;
                 default:
                     break;
             }
             return dt;
         }
-
-        public static String Upsert(RequestPackage rqp)
+        public static String Upsert(RequestPackage rqp0)
         {
             String status = "error";
-            if (rqp != null && rqp.Parameters != null)
+            if (rqp0 != null && rqp0.Parameters != null)
             {
                 // надо сохранить в 1с, в xl, в sql и потом обновить sql из xl и 1с
                 // первое сохранение в 1с потому, что если это новая запись, то получим код который нужен для xl
 
-                if (String.IsNullOrWhiteSpace(rqp["f0"] as String))
+                if (String.IsNullOrWhiteSpace(rqp0["f0"] as String))
                 {
                     // для новой записи - надо получить внутренний номер договора из sql
-                    String agrNum = HomeData.Agrs.F1GetAgrNumSql();
-                    rqp["f2"] = agrNum;
+                    String agrNum = F1HomeData.F1GetAgrNumSql();
+                    rqp0["f2"] = agrNum;
                     // если нет внешнего номера договора, то назначаем ему внутренний
-                    if (String.IsNullOrWhiteSpace(rqp["f3"] as String))
+                    if (String.IsNullOrWhiteSpace(rqp0["f3"] as String))
                     {
-                        rqp["f3"] = agrNum;
+                        rqp0["f3"] = agrNum;
                     }
                 }
                 Int32 code = -1;
-                String cmd = null;
-                Int32.TryParse(rqp["f14"] as String, out code);
+                Int32.TryParse(rqp0["f14"] as String, out code);
+                RequestPackage rqp1 = new RequestPackage();
                 if (code > 0)
                 {
-                    cmd = "Обновить";
+                    rqp1.Command = "Обновить";
                 }
                 else
                 {
-                    cmd = "Добавить";
+                    rqp1.Command = "Добавить";
                 }
-                Dictionary<String, String> ocPars = new Dictionary<string, string>
+                rqp1.Parameters = new RequestParameter[] 
                 {
-                    { "Тип", "Справочник" },
-                    { "Вид", "Договоры" },
-                    { "Код", code.ToString() },
-                    { "Примечание", rqp["f1"] as String },
-                    { "Наименование", rqp["f3"] as String },
-                    { "Владелец", rqp["f4"] as String },
-                    { "ВладелецКод", rqp["f4c"] as String },
-                    { "ДатаДоговора", rqp["f6"] as String },
-                    { "ОтветЛицо", rqp["f12"] as String },
-                    { "СуммаДоговора", rqp["f13"] as String },
-                    { "НомерТоргов", rqp["f15"] as String },
-                    { "ДатаОкончания", rqp["ДатаОкончания"] as String },
-                    { "ОтсрочкаПлатежа", rqp["ОтсрочкаПлатежа"] as String },
+                    new RequestParameter("Тип", "Справочник"),
+                    new RequestParameter("Вид", "Договоры"),
+                    new RequestParameter("Код", code.ToString()),
+                    new RequestParameter("Примечание", rqp0["f1"] as String),
+                    new RequestParameter("Наименование", rqp0["f3"] as String),
+                    new RequestParameter("Владелец", rqp0["f4"] as String),
+                    new RequestParameter("ВладелецКод", rqp0["f4c"] as String),
+                    new RequestParameter("ДатаДоговора", rqp0["f6"] as String),
+                    new RequestParameter("ОтветЛицо", rqp0["f12"] as String),
+                    new RequestParameter("СуммаДоговора", rqp0["f13"] as String),
+                    new RequestParameter("НомерТоргов", rqp0["f15"] as String),
+                    new RequestParameter("ДатаОкончания", rqp0["ДатаОкончания"] as String),
+                    new RequestParameter("ОтсрочкаПлатежа", rqp0["ОтсрочкаПлатежа"] as String),
                     //{ "Представитель", rqp["Представитель"] as String },
                     //{ "ДопСоглашение", rqp["ДопСоглашение"] as String },
-                    { "Пролонгация", rqp["Пролонгация"] as String },
-                    { "ГосударственныйИдентификатор", rqp["f17"] as String }
+                    new RequestParameter("Пролонгация", rqp0["Пролонгация"] as String),
+                    new RequestParameter("ГосударственныйИдентификатор", rqp0["f17"] as String)
                 };
-                code = HomeData.Agrs.F1Upsert1c(cmd, ocPars);
+
+                code = F1HomeData.F1Upsert1c(rqp1);
                 if (code >= 0)
                 {
-                    rqp["f14"] = code.ToString();
+                    rqp0["f14"] = code.ToString();
                 }
 
-                if (String.IsNullOrWhiteSpace(rqp["f0"] as String))
+                String cmd;
+                if (String.IsNullOrWhiteSpace(rqp0["f0"] as String))
                 {
                     cmd = "Добавить";
                 }
@@ -140,12 +136,11 @@ namespace AreasAgrs.Areas.Agrs.Models
                 {
                     cmd = "Обновить";
                 }
-                HomeData.Agrs.F1UpsertSql(cmd, rqp);
+                F1HomeData.F1UpsertSql(cmd, rqp0);
                 status = "ok";
             }
             return status;
         }
-
         public static String Delete(RequestPackage rqp0)
         {
             String status = "error";
@@ -162,26 +157,26 @@ namespace AreasAgrs.Areas.Agrs.Models
                             new RequestParameter { Name = "f0", Value = f0 }
                         }
                     };
-                    GarzaSql.Execute12(rqp);
+                    rqp.GetResponse("http://127.0.0.1:11012/");
                     status = "sql ok";
                 }
                 String f14 = rqp0["f14"] as String;
                 if (!String.IsNullOrWhiteSpace(f14))
                 {
                     // есть ссылка на 1c
-                    String cmd = null;
+                    RequestPackage rqp = new RequestPackage();
                     Int32 code = -1;
                     Int32.TryParse(f14, out code);
                     if (code > 0)
                     {
-                        cmd = "Удалить";
-
-                        Dictionary<String, String> ocPars = new Dictionary<string, string>();
-                        ocPars.Add("Тип", "Справочник");
-                        ocPars.Add("Вид", "Договоры");
-                        ocPars.Add("Код", code.ToString());
-
-                        code = HomeData.Agrs.F1Upsert1c(cmd, ocPars);
+                        rqp.Command = "Удалить";
+                        rqp.Parameters = new RequestParameter[] 
+                        {
+                            new RequestParameter("Тип", "Справочник"),
+                            new RequestParameter("Вид", "Договоры"),
+                            new RequestParameter("Код", code.ToString())
+                        };
+                        code = F1HomeData.F1Upsert1c(rqp);
                     }
                     status += " 1c ok";
                 }
