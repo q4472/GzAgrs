@@ -109,17 +109,17 @@ namespace Agrs.Data
             }
             return agrNum;
         }
-        public static DataTable F1GetДоговоры(RequestPackage rqp = null)
+        public static DataTable F1GetДоговоры(RequestPackage rqp0 = null)
         {
             DataTable dt = null;
-            RequestPackage rqp1 = new RequestPackage
+            RequestPackage rqp = new RequestPackage
             {
                 Command = "[dbo].[договоры_покупатели_select_2]"
             };
-            if (rqp != null && rqp.Parameters != null && rqp.Parameters.Length > 0)
+            if (rqp0 != null && rqp0.Parameters != null && rqp0.Parameters.Length > 0)
             {
-                rqp1.Parameters = new RequestParameter[0];
-                foreach (var p in rqp.Parameters)
+                rqp.Parameters = new RequestParameter[0];
+                foreach (var p in rqp0.Parameters)
                 {
                     String name = null;
                     switch (p.Name)
@@ -139,12 +139,13 @@ namespace Agrs.Data
                     }
                     if (name != null && !String.IsNullOrWhiteSpace(p.Value as String))
                     {
-                        Array.Resize(ref rqp1.Parameters, rqp1.Parameters.Length + 1);
-                        rqp1.Parameters[rqp1.Parameters.Length - 1] = new RequestParameter(name, p.Value);
+                        Array.Resize(ref rqp.Parameters, rqp.Parameters.Length + 1);
+                        rqp.Parameters[rqp.Parameters.Length - 1] = new RequestParameter(name, p.Value);
                     }
                 }
             }
-            dt = GetFirstTable(rqp.GetResponse("http://127.0.0.1:11012/").Data);
+            var rsp = rqp.GetResponse("http://127.0.0.1:11012/");
+            dt = GetFirstTable(rsp.Data);
             return dt;
         }
         public static DataTable F1GetДоговоры(String f0)
