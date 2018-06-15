@@ -133,7 +133,8 @@
                             <td>Наименование клиента:</td>
                             <td>
                                 <input type="text" name="f4" data-code="" data-inn="" data-city="" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f4"]" />
-                                <input type="button" name="f4" value="..." onclick="AgrsViewsF1Detail.stackPanelButtonClick('Клиенты')" />
+                                <input type="button" name="f4b" value="..." onclick="AgrsViewsF1Detail.stackPanelButtonClick('Клиенты')" />
+                                <input type="hidden" name="f4c" value="" />
                             </td>
                         </tr>
                         <tr>
@@ -168,7 +169,8 @@
                             <td>Менеджер:</td>
                             <td>
                                 <input type="text" name="f12" data-code="" data-inn="" data-city="" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f12"]" />
-                                <input type="button" name="f12" value="..." onclick="AgrsViewsF1Detail.stackPanelButtonClick('Сотрудники')" />
+                                <input type="button" name="f12b" value="..." onclick="AgrsViewsF1Detail.stackPanelButtonClick('Сотрудники')" />
+                                <input type="hidden" name="f12c" value="" />
                             </td>
                         </tr>
                         <tr>
@@ -219,10 +221,16 @@
         var main = $('#agrs_views_f1_detail');
         var modalBG = main.find('div.modal_bg');
         var modalContent = main.find('div.modal_content');
+        var filter4 = main.find('input[type="text"][name="f4"]'); // Клиенты
+        var code4 = main.find('input[type="hidden"][name="f4c"]');
+        var filter12 = main.find('input[type="text"][name="f12"]'); // Сотрудники
+        var code12 = main.find('input[type="hidden"][name="f12c"]');
         main.find('input').change(function () { fieldChange(this); });
         main.find('input.date').change(function () { Nskd.Validator.dNorm(this); });
         main.find('input.n2').change(function () { Nskd.Validator.nNorm(this, 2); });
         main.find('input.n0').change(function () { Nskd.Validator.nNorm(this, 0); });
+        filter4.change(function () { code4.val(''); });
+        filter12.change(function () { code12.val(''); });
         function fieldChange(element) {
             $(element).css('background-color', '#cfc');
             $('#p_agrs_f1_save_button').css('background-color', '#cfc');
@@ -232,8 +240,9 @@
             stackPanelButtonClick: function (tableName) {
                 // если что-то введено в TextBox, то использовать как фильтр
                 var filter;
-                if (tableName == 'Клиенты') filter = main.find('input[type="text"][name="f4"]');
-                else filter = main.find('input[type="text"][name="f12"]'); // Сотрудники
+                var code;
+                if (tableName == 'Клиенты') { filter = filter4; code = code4; }
+                else { filter = filter12; code = code12; } // Сотрудники
                 var rqp = {
                     Parameters: [
                         { Name: 'tableName', Value: tableName },
@@ -250,13 +259,15 @@
                         // на все строчки вешаем обработчик
                         modalContent.find('tr').click(function () {
                             var tr = $(this);
-                            // первая ячейка - код. Переписываем его в атрибут.
+                            // первая ячейка - код. Переписываем его в атрибут 'data-code'.
                             filter.attr('data-code', tr.find('td:eq(0)').text());
-                            // вторая ячейка - описание. Переписываем его в текстовое поле.
+                            //      и в 'code'
+                            code.val(tr.find('td:eq(0)').text());
+                            // вторая ячейка - описание. Переписываем его в атрибут 'value'.
                             filter.val(tr.find('td:eq(1)').text());
-                            // третья ячейка - инн. Переписываем его в атрибут.
+                            // третья ячейка - инн. Переписываем его в атрибут 'data-inn'.
                             filter.attr('data-inn', tr.find('td:eq(2)').text());
-                            // четвётая ячейка - город. Переписываем его в атрибут.
+                            // четвётая ячейка - город. Переписываем его в атрибут 'data-city'.
                             filter.attr('data-city', tr.find('td:eq(3)').text());
                             // Переносим город, если он есть, в поле "Город (населённый пункт) в родительской форме"
                             if (filter.attr('data-city')) {

@@ -115,7 +115,7 @@ namespace AreasAgrs.Areas.Agrs.Models
                     { "Примечание", rqp["f1"] as String },
                     { "Наименование", rqp["f3"] as String },
                     { "Владелец", rqp["f4"] as String },
-                    { "ВладелецКод", System.Convert.ToString(rqp["c0"]) },
+                    { "ВладелецКод", rqp["f4c"] as String },
                     { "ДатаДоговора", rqp["f6"] as String },
                     { "ОтветЛицо", rqp["f12"] as String },
                     { "СуммаДоговора", rqp["f13"] as String },

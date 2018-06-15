@@ -152,7 +152,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\F1Model.cs" />
-    <Compile Include="Models\Nskd.Npc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -243,9 +242,7 @@
     <Content Include="Views\F1\Filter.cshtml" />
     <Content Include="Views\F1\Detail.cshtml" />
     <Content Include="Views\F1\Command.cshtml" />
-    <Content Include="Views\F1\DetailFields\Enu1.cshtml" />
     <Content Include="Views\F1\DetailFields\ListBox1.cshtml" />
-    <Content Include="Views\F1\DetailFields\SelectorWithListBox1.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\LeftSection.cshtml" />
   </ItemGroup>
