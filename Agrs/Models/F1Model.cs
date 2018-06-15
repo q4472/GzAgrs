@@ -1,5 +1,4 @@
-﻿using AreasAgrs.Areas.Agrs.Data;
-using Base.Data;
+﻿using Base.Data;
 using Nskd;
 using System;
 using System.Collections.Generic;
@@ -14,18 +13,18 @@ namespace AreasAgrs.Areas.Agrs.Models
         // заход при первом обращении (без фильтра)
         public F1Model()
         {
-            NetSqlГарзаДоговоры = Data.GarzaSql.F1GetДоговоры();
+            NetSqlГарзаДоговоры = GarzaSql.F1GetДоговоры();
         }
 
         // заход с фильтром или по "f0" для "detail" или по полям фильтра для "filtered_view"
         public F1Model(RequestPackage rqp)
         {
-            NetSqlГарзаДоговоры = Data.GarzaSql.F1GetДоговоры(rqp);
+            NetSqlГарзаДоговоры = GarzaSql.F1GetДоговоры(rqp);
         }
 
         public F1Model(String f0)
         {
-            NetSqlГарзаДоговоры = Data.GarzaSql.F1GetДоговоры(f0);
+            NetSqlГарзаДоговоры = GarzaSql.F1GetДоговоры(f0);
             if (NetSqlГарзаДоговоры != null && NetSqlГарзаДоговоры.Rows.Count > 0)
             {
                 NetSqlГарзаДоговоры.Columns.Add("ДатаОкончания", typeof(DateTime));
@@ -45,7 +44,7 @@ namespace AreasAgrs.Areas.Agrs.Models
             {
                 if (NetSqlГарзаДоговоры != null && NetSqlГарзаДоговоры.Rows.Count > 0)
                 {
-                    DataTable dt = Data.Garza1Cv77.F1GetAgrByCode(code);
+                    DataTable dt = Garza1Cv77.F1GetAgrByCode(code);
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         NetSqlГарзаДоговоры.Rows[0]["ДатаОкончания"] = dt.Rows[0]["ДатаОкончания"];
