@@ -184,7 +184,7 @@ namespace Agrs.Data
                 value = dt.Rows[0][0];
                 if (value == DBNull.Value) value = null;
             }
-            return null;
+            return value;
         }
     }
 }
