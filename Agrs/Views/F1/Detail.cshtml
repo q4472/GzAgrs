@@ -203,6 +203,28 @@
                         </tr>
                     </table>
                 </td>
+                <td class="c3" style="padding-left: 10px">
+                    <table style="border: 1pt solid black">
+                        <tr>
+                            <td style="text-align:left"><input type="checkbox" onclick="AgrsViewsF1Detail.toggleUr(this)" />Рассылка документов</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" class="urDoc" disabled="disabled" />Включить в рассылку Счёт</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" class="urDoc" disabled="disabled" />Включить в рассылку Накладную</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" class="urDoc" disabled="disabled" />Включить в рассылку Акт</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" class="urDoc" disabled="disabled" />Включить в рассылку Счёт-фактуру</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" class="urDoc" disabled="disabled" />Включить в рассылку Документы качества</td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
         </table>
                                         }
@@ -280,6 +302,16 @@
                 });
                 modalContent.html('<span>Выполняется загрузка данных. Пожалуйста подождите.</span>');
                 modalBG.show();
+            },
+            toggleUr: function (element) {
+                var e = $(element);
+                var urDocs = e.closest('table').find('input[class="urDoc"]');
+                if (e.prop('checked')) {
+                    urDocs.prop('disabled', false);
+                } else {
+                    urDocs.prop('checked', false);
+                    urDocs.prop('disabled', true);
+                }
             }
         };
     })();

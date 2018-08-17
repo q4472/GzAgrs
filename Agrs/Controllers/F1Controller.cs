@@ -10,8 +10,13 @@ namespace Agrs.Controllers
     {
         public Object Index(String sessionId)
         {
+            Object v = null;
             F1Model m = new F1Model();
-            return View("~/Views/F1/Index.cshtml", m);
+            if (ControllerContext.HttpContext.IsDebuggingEnabled)
+                v = View("~/Views/F1/Index.cshtml", m); // _ViewStart.cshtml
+            else
+                v = PartialView("~/Views/F1/Index.cshtml", m);
+            return v;
         }
 
         public Object GetDataForFilteredView()
