@@ -118,7 +118,13 @@ namespace Agrs.Models
                     //{ "Представитель", rqp["Представитель"] as String },
                     //{ "ДопСоглашение", rqp["ДопСоглашение"] as String },
                     new RequestParameter("Пролонгация", rqp0["Пролонгация"] as String),
-                    new RequestParameter("ГосударственныйИдентификатор", rqp0["f17"] as String)
+                    new RequestParameter("ГосударственныйИдентификатор", rqp0["f17"] as String),
+                    new RequestParameter("ВключитьРассылкуДокументов", (Boolean)rqp0["ur"]),
+                    new RequestParameter("ВключитьВРассылкуСчёт", (Boolean)rqp0["urd1"]),
+                    new RequestParameter("ВключитьВРассылкуНакладную", (Boolean)rqp0["urd2"]),
+                    new RequestParameter("ВключитьВРассылкуАкт", (Boolean)rqp0["urd3"]),
+                    new RequestParameter("ВключитьВРрассылкуСчётФактуру", (Boolean)rqp0["urd4"]),
+                    new RequestParameter("ВключитьВРассылкуДокументыКачества", (Boolean)rqp0["urd5"]),
                 };
 
                 code = F1HomeData.F1Upsert1c(rqp1);

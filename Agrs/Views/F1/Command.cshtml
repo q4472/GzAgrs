@@ -24,8 +24,13 @@
                     Command: 'save',
                     Parameters: []
                 };
-                $('#agrs_views_f1_detail input[type="hidden"], #agrs_views_f1_detail select, #agrs_views_f1_detail input[type="text"]').each(function (index, element) {
-                    rqp.Parameters.push({ Name: element.getAttribute('name'), Value: $(element).val() });
+                $('#agrs_views_f1_detail input[type="hidden"], ' +
+                    '#agrs_views_f1_detail select, ' +
+                    '#agrs_views_f1_detail input[type="text"]').each(function (index, element) {
+                        rqp.Parameters.push({ Name: element.getAttribute('name'), Value: $(element).val() });
+                    });
+                $('#agrs_views_f1_detail input[type="checkbox"]').each(function (index, element) {
+                    rqp.Parameters.push({ Name: element.getAttribute('name'), Value: $(element).prop('checked') });
                 });
                 Nskd.Http.post({
                     url: '/Agrs/F1/Save',
