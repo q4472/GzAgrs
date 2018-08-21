@@ -71,6 +71,12 @@
         Object v9 = Model.NetSqlГарзаДоговоры.Rows[0]["f9"];
         Object v13 = Model.NetSqlГарзаДоговоры.Rows[0]["f13"];
         Object v71 = Model.NetSqlГарзаДоговоры.Rows[0]["ДатаОкончания"];
+        String ur = ((Double)Model.NetSqlГарзаДоговоры.Rows[0]["ДолжнаБытьРассылка"] == 1) ? "checked='checked'" : "";
+        String urd1 = ((Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуСчет"] == 1) ? "checked='checked'" : "";
+        String urd2 = ((Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуРасходную"] == 1) ? "checked='checked'" : "";
+        String urd3 = ((Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуАкт"] == 1) ? "checked='checked'" : "";
+        String urd4 = ((Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуСчет_фактуру"] == 1) ? "checked='checked'" : "";
+        String urd5 = ((Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуДокументыКачества"] == 1) ? "checked='checked'" : "";
         <input type="hidden" name="f0" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f0"]" />
         <input type="hidden" name="f14" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f14"]" />
         <br />
@@ -206,22 +212,22 @@
                 <td class="c3" style="padding-left: 10px">
                     <table style="border: 1pt solid black">
                         <tr>
-                            <td style="text-align:left"><input type="checkbox" name="ur" onclick="AgrsViewsF1Detail.toggleUr(this)" />Рассылка документов</td>
+                            <td style="text-align:left"><input type="checkbox" name="ur" @ur onclick="AgrsViewsF1Detail.toggleUr(this)" />Рассылка документов</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" name="urd1" class="urDoc" disabled="disabled" />Включить в рассылку Счёт</td>
+                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" name="urd1" @urd1 class="urDoc" disabled="disabled" />Включить в рассылку Счёт</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" name="urd2" class="urDoc" disabled="disabled" />Включить в рассылку Накладную</td>
+                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" name="urd2" @urd2 class="urDoc" disabled="disabled" />Включить в рассылку Накладную</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" name="urd3" class="urDoc" disabled="disabled" />Включить в рассылку Акт</td>
+                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" name="urd3" @urd3 class="urDoc" disabled="disabled" />Включить в рассылку Акт</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" name="urd4" class="urDoc" disabled="disabled" />Включить в рассылку Счёт-фактуру</td>
+                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" name="urd4" @urd4 class="urDoc" disabled="disabled" />Включить в рассылку Счёт-фактуру</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" name="urd5" class="urDoc" disabled="disabled" />Включить в рассылку Документы качества</td>
+                            <td style="text-align:left; padding-left: 10px"><input type="checkbox" name="urd5" @urd5 class="urDoc" disabled="disabled" />Включить в рассылку Документы качества</td>
                         </tr>
                     </table>
                 </td>
