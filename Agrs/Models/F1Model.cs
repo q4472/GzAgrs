@@ -85,12 +85,17 @@ namespace Agrs.Models
         public static String Upsert(RequestPackage rqp0)
         {
             String status = "error";
-            if (rqp0 != null && rqp0.Parameters != null)
-            {
-                // надо сохранить в 1с, в xl, в sql и потом обновить sql из xl и 1с
-                // первое сохранение в 1с потому, что если это новая запись, то получим код который нужен для xl
+            if (rqp0 == null || rqp0.Parameters == null) { return status; }
 
-                if (String.IsNullOrWhiteSpace(rqp0["f0"] as String))
+            // Надо сохранить в 1с, в xl, в sql и потом обновить sql из xl и 1с.
+
+            String f0 = rqp0["f0"] as String;
+            String cmd;
+            if (String.IsNullOrWhiteSpace(f0)) { cmd = "Добавить"; } else { cmd = "Обновить"; }
+
+            // Первое сохранение в 1с потому, что, если это новая запись, то получим код который нужен для xl и для sql.
+            {
+                if (String.IsNullOrWhiteSpace(f0))
                 {
                     // для новой записи - надо получить внутренний номер договора из sql
                     String agrNum = F1HomeData.F1GetAgrNumSql();
@@ -101,18 +106,12 @@ namespace Agrs.Models
                         rqp0["f3"] = agrNum;
                     }
                 }
-                Int32 code = -1;
-                Int32.TryParse(rqp0["f14"] as String, out code);
                 RequestPackage rqp1 = new RequestPackage();
-                if (code > 0)
-                {
-                    rqp1.Command = "Обновить";
-                }
-                else
-                {
-                    rqp1.Command = "Добавить";
-                }
-                rqp1.Parameters = new RequestParameter[] 
+
+                Int32.TryParse(rqp0["f14"] as String, out Int32 code);
+
+                rqp1.Command = (code > 0) ? "Обновить" : "Добавить";
+                rqp1.Parameters = new RequestParameter[]
                 {
                     new RequestParameter("Тип", "Справочник"),
                     new RequestParameter("Вид", "Договоры"),
@@ -144,19 +143,14 @@ namespace Agrs.Models
                 {
                     rqp0["f14"] = code.ToString();
                 }
-
-                String cmd;
-                if (String.IsNullOrWhiteSpace(rqp0["f0"] as String))
-                {
-                    cmd = "Добавить";
-                }
-                else
-                {
-                    cmd = "Обновить";
-                }
-                F1HomeData.F1UpsertSql(cmd, rqp0);
-                status = "ok";
             }
+
+            // Сохранение в xl убрал за ненадобностью.
+            { }
+
+            F1HomeData.F1UpsertSql(cmd, rqp0);
+            status = "ok";
+
             return status;
         }
         public static String Delete(RequestPackage rqp0)
@@ -178,24 +172,18 @@ namespace Agrs.Models
                     rqp.GetResponse("http://127.0.0.1:11012/");
                     status = "sql ok";
                 }
-                String f14 = rqp0["f14"] as String;
-                if (!String.IsNullOrWhiteSpace(f14))
+                if (Int32.TryParse(rqp0["f14"] as String, out Int32 code) && code > 0)
                 {
                     // есть ссылка на 1c
                     RequestPackage rqp = new RequestPackage();
-                    Int32 code = -1;
-                    Int32.TryParse(f14, out code);
-                    if (code > 0)
+                    rqp.Command = "Удалить";
+                    rqp.Parameters = new RequestParameter[]
                     {
-                        rqp.Command = "Удалить";
-                        rqp.Parameters = new RequestParameter[] 
-                        {
                             new RequestParameter("Тип", "Справочник"),
                             new RequestParameter("Вид", "Договоры"),
-                            new RequestParameter("Код", code.ToString())
-                        };
-                        code = F1HomeData.F1Upsert1c(rqp);
-                    }
+                            new RequestParameter("Код", code)
+                    };
+                    F1HomeData.F1Upsert1c(rqp);
                     status += " 1c ok";
                 }
             }
