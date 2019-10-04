@@ -16,12 +16,15 @@
 </div>
 <script type="text/javascript">
     var AgrsViewsF1Command = (function () {
+
+        let cmd = 'update';
+
         return {
             saveButtonClick: function () {
                 $('#p_agrs_f1_save_button').prop('disabled', true);
                 $('#p_agrs_f1_save_button').css('background-color', '#eee');
                 var rqp = {
-                    Command: 'save',
+                    Command: cmd,
                     Parameters: []
                 };
                 $('#agrs_views_f1_detail input[type="hidden"], ' +
@@ -43,61 +46,68 @@
                         ArgsViewsF1Filter.apply();
                     }
                 });
+                cmd = 'update';
             },
             addButtonClick: function () {
+                cmd = 'insert';
+                {
+                    $('#p_agrs_f1_save_button').prop('disabled', true);
+                    $('#p_agrs_f1_save_button').css('background-color', '#eee');
+                    $('#p_agrs_f1_add_button').prop('disabled', true);
+                    $('#p_agrs_f1_add_button').css('background-color', '#cfc');
+                    $('#p_agrs_f1_del_button').prop('disabled', true);
+                    $('#p_agrs_f1_del_button').css('background-color', '#eee');
 
-                $('#p_agrs_f1_save_button').prop('disabled', true);
-                $('#p_agrs_f1_save_button').css('background-color', '#eee');
-                $('#p_agrs_f1_add_button').prop('disabled', true);
-                $('#p_agrs_f1_add_button').css('background-color', '#cfc');
-                $('#p_agrs_f1_del_button').prop('disabled', true);
-                $('#p_agrs_f1_del_button').css('background-color', '#eee');
+                    // очистить все поля для ввода
+                    $('#agrs_views_f1_detail input[type="hidden"], #agrs_views_f1_detail input[type="text"]')
+                        .val('')
+                        .css('background-color', '#fff');
 
-                // очистить все поля для ввода
-                $('#agrs_views_f1_detail input[type="hidden"], #agrs_views_f1_detail input[type="text"]')
-                    .val('')
-                    .css('background-color', '#fff');
+                    // выбрать начальное значение для поля "Вид контракта" f1
+                    $('#agrs_views_f1_detail select option:eq(1)').prop('selected', true);
 
-                // выбрать начальное значение для поля "Вид контракта" f1
-                $('#agrs_views_f1_detail select option:eq(1)').prop('selected', true);
+                    // выбрать начальное значение для поля "№ п/п (внутр)" f2
+                    var newNum = '{next}-' + ((new Date()).getFullYear() - 2000);
+                    $('#agrs_views_f1_detail input[name="f2"] ').val(newNum);
 
-                // выбрать начальное значение для поля "№ п/п (внутр)" f2
-                var newNum = '{next}-' + ((new Date()).getFullYear() - 2000);
-                $('#agrs_views_f1_detail input[name="f2"] ').val(newNum);
+                    // выбрать начальное значение для поля "Дата внесения в реестр" f7
+                    var now = new Date();
+                    var month = now.getMonth() + 1;
+                    var date = now.getDate();
+                    var newdate = now.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + (date < 10 ? '0' : '') + date;
+                    $('#agrs_views_f1_detail input[name="f7"]').val(newdate);
 
-                // выбрать начальное значение для поля "Дата внесения в реестр" f7
-                var now = new Date();
-                var month = now.getMonth() + 1;
-                var date = now.getDate();
-                var newdate = now.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + (date < 10 ? '0' : '') + date;
-                $('#agrs_views_f1_detail input[name="f7"]').val(newdate);
-
-                // выбрать начальное значение для поля "Контрольная дата возврата" f8
-                var check = now.setDate(now.getDate() + 50);
-                month = now.getMonth() + 1;
-                date = now.getDate();
-                checkdate = now.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + (date < 10 ? '0' : '') + date;
-                $('#agrs_views_f1_detail input[name="f8"] ').val(checkdate);
+                    // выбрать начальное значение для поля "Контрольная дата возврата" f8
+                    var check = now.setDate(now.getDate() + 50);
+                    month = now.getMonth() + 1;
+                    date = now.getDate();
+                    checkdate = now.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + (date < 10 ? '0' : '') + date;
+                    $('#agrs_views_f1_detail input[name="f8"] ').val(checkdate);
+                }
             },
             delButtonClick: function () {
                 if (confirm('Удалить запись о договоре?')) {
-                    var rqp = {
-                        Command: 'delete',
-                        Parameters: [
-                            { Name: 'f0', Value: $('#agrs_views_f1_detail input[name="f0"]').val() },
-                            { Name: 'f14', Value: $('#agrs_views_f1_detail input[name="f14"]').val() }
-                        ]
-                    };
-                    Nskd.Http.post({
-                        url: '/Agrs/F1/Save',
-                        rqp: rqp,
-                        done: function (data) {
-                            ArgsViewsF1Filter.apply();
-                        }
-                    });
-                    $('#p_agrs_f1_del_button').prop('disabled', true);
-                    $('#agrs_f1_index div.sect_2 div.detail_panel').empty();
-                    $('#agrs_f1_index div.sect_1 div.grid_panel').empty();
+                    cmd = 'delete';
+                    {
+                        var rqp = {
+                            Command: cmd,
+                            Parameters: [
+                                { Name: 'f0', Value: $('#agrs_views_f1_detail input[name="f0"]').val() },
+                                { Name: 'f14', Value: $('#agrs_views_f1_detail input[name="f14"]').val() }
+                            ]
+                        };
+                        Nskd.Http.post({
+                            url: '/Agrs/F1/Save',
+                            rqp: rqp,
+                            done: function (data) {
+                                ArgsViewsF1Filter.apply();
+                            }
+                        });
+                        $('#p_agrs_f1_del_button').prop('disabled', true);
+                        $('#agrs_f1_index div.sect_2 div.detail_panel').empty();
+                        $('#agrs_f1_index div.sect_1 div.grid_panel').empty();
+                    }
+                    cmd = 'update';
                 }
             }
         };

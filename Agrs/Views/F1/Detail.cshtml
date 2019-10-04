@@ -71,12 +71,12 @@
         Object v9 = Model.NetSqlГарзаДоговоры.Rows[0]["f9"];
         Object v13 = Model.NetSqlГарзаДоговоры.Rows[0]["f13"];
         Object v71 = Model.NetSqlГарзаДоговоры.Rows[0]["ДатаОкончания"];
-        String ur = ((Double)Model.NetSqlГарзаДоговоры.Rows[0]["ДолжнаБытьРассылка"] == 1) ? "checked='checked'" : "";
-        String urd1 = ((Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуСчет"] == 1) ? "checked='checked'" : "";
-        String urd2 = ((Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуРасходную"] == 1) ? "checked='checked'" : "";
-        String urd3 = ((Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуАкт"] == 1) ? "checked='checked'" : "";
-        String urd4 = ((Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуСчет_фактуру"] == 1) ? "checked='checked'" : "";
-        String urd5 = ((Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуДокументыКачества"] == 1) ? "checked='checked'" : "";
+        String ur = ((Model.NetSqlГарзаДоговоры.Rows[0]["ДолжнаБытьРассылка"] != DBNull.Value) && (Double)Model.NetSqlГарзаДоговоры.Rows[0]["ДолжнаБытьРассылка"] == 1) ? "checked='checked'" : "";
+        String urd1 = ((Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуСчет"] != DBNull.Value) && (Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуСчет"] == 1) ? "checked='checked'" : "";
+        String urd2 = ((Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуРасходную"] != DBNull.Value) && (Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуРасходную"] == 1) ? "checked='checked'" : "";
+        String urd3 = ((Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуАкт"] != DBNull.Value) && (Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуАкт"] == 1) ? "checked='checked'" : "";
+        String urd4 = ((Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуСчет_фактуру"] != DBNull.Value) && (Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуСчет_фактуру"] == 1) ? "checked='checked'" : "";
+        String urd5 = ((Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуДокументыКачества"] != DBNull.Value) && (Double)Model.NetSqlГарзаДоговоры.Rows[0]["ВключитьВРассылкуДокументыКачества"] == 1) ? "checked='checked'" : "";
         <input type="hidden" name="f0" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f0"]" />
         <input type="hidden" name="f14" value="@Model.NetSqlГарзаДоговоры.Rows[0]["f14"]" />
         <br />

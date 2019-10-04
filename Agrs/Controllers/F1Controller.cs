@@ -45,17 +45,20 @@ namespace Agrs.Controllers
 
         public Object Save()
         {
-            String status = null;
+            Object result = null;
             var rqp = RequestPackage.ParseRequest(Request.InputStream, Request.ContentEncoding);
             if (rqp != null)
             {
                 switch (rqp.Command)
                 {
-                    case "save":
-                        status = F1Model.Upsert(rqp);
+                    case "insert":
+                        result = F1Model.Insert(rqp);
+                        break;
+                    case "update":
+                        result = F1Model.Update(rqp);
                         break;
                     case "delete":
-                        status = F1Model.Delete(rqp);
+                        result = F1Model.Delete(rqp);
                         break;
                     default:
                         break;
@@ -63,9 +66,9 @@ namespace Agrs.Controllers
             }
             else
             {
-                status = "Ошибка в формате команды.";
+                result = "Ошибка в формате команды.";
             }
-            return status;
+            return result;
         }
     }
 }
