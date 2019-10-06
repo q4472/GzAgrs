@@ -19,6 +19,23 @@
 
         let cmd = 'update';
 
+        function clearForm() {
+            $('#p_agrs_f1_apply_filter').prop('disabled', true);
+            $('#agrs_f1_index div.sect_1 div.grid_panel').empty();
+            $('#p_agrs_f1_save_button').prop('disabled', true);
+            $('#p_agrs_f1_save_button').css('background-color', '#eee');
+            $('#agrs_f1_index div.sect_2 div.detail_panel').empty();
+        }
+        function setCommandButtons() {
+            $('#p_agrs_f1_apply_filter').prop('disabled', false);
+            $('#p_agrs_f1_save_button').prop('disabled', true);
+            $('#p_agrs_f1_save_button').css('background-color', '#eee');
+            $('#p_agrs_f1_add_button').prop('disabled', false);
+            $('#p_agrs_f1_add_button').css('background-color', '#eee');
+            $('#p_agrs_f1_del_button').prop('disabled', false);
+            $('#p_agrs_f1_del_button').css('background-color', '#eee');
+        }
+
         return {
             saveButtonClick: function () {
                 $('#p_agrs_f1_save_button').prop('disabled', true);
@@ -35,15 +52,18 @@
                 $('#agrs_views_f1_detail input[type="checkbox"]').each(function (index, element) {
                     rqp.Parameters.push({ Name: element.getAttribute('name'), Value: $(element).prop('checked') });
                 });
+                clearForm();
                 Nskd.Http.post({
                     url: '/Agrs/F1/Save',
                     rqp: rqp,
                     done: function (data) {
-                        alert(data);
+                        //alert(data);
                         // сохранение должно вернуть новые данные с необычным фильтром (не "и", а "или")
                         // "или" по (№ аукциона, поставшик, сумма).
                         // Если ничего нет, то применим обычный фильтр, тот, что уже введён руками.
-                        ArgsViewsF1Filter.apply();
+                        //ArgsViewsF1Filter.apply();
+                        $('#agrs_f1_index div.sect_1 div.grid_panel').html(data);
+                        setCommandButtons();
                     }
                 });
                 cmd = 'update';

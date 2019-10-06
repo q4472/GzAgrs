@@ -1,7 +1,6 @@
 ﻿using Agrs.Models;
 using Nskd;
 using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace Agrs.Controllers
@@ -52,7 +51,9 @@ namespace Agrs.Controllers
                 switch (rqp.Command)
                 {
                     case "insert":
-                        result = F1Model.Insert(rqp);
+                        var dt = F1Model.Insert(rqp);
+                        F1Model m = new F1Model(dt);
+                        result = PartialView("~/Views/F1/FilteredView.cshtml", m);
                         break;
                     case "update":
                         result = F1Model.Update(rqp);

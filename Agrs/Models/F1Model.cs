@@ -44,6 +44,11 @@ namespace Agrs.Models
                 }
             }
         }
+        public F1Model(Object dt)
+        {
+            // заход с готовой таблицей "Договоры"
+            NetSqlГарзаДоговоры = dt as DataTable;
+        }
         private void ДозагрузитьДанныеИз1сГарза(String code)
         {
             if (NetSqlГарзаДоговоры != null && NetSqlГарзаДоговоры.Rows.Count > 0)
