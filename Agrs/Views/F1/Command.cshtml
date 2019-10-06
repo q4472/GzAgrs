@@ -58,12 +58,19 @@
                     rqp: rqp,
                     done: function (data) {
                         //alert(data);
-                        // сохранение должно вернуть новые данные с необычным фильтром (не "и", а "или")
+                        // Сохранение должно вернуть новые данные с необычным фильтром (не "и", а "или")
                         // "или" по (№ аукциона, поставшик, сумма).
                         // Если ничего нет, то применим обычный фильтр, тот, что уже введён руками.
+                        // Последняя вставка точно должна быть, так что обычный фильтр не нужен.
                         //ArgsViewsF1Filter.apply();
-                        $('#agrs_f1_index div.sect_1 div.grid_panel').html(data);
-                        setCommandButtons();
+                        if (cmd == 'insert') {
+                            $('#agrs_f1_index div.sect_1 div.grid_panel').html(data);
+                            setCommandButtons();
+                        } else if (cmd == 'update') {
+                            ArgsViewsF1Filter.apply();
+                        } else {
+                            alert('Что-то не так.<br \>' + data);
+                        }
                     }
                 });
                 cmd = 'update';

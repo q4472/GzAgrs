@@ -9,7 +9,7 @@ namespace Agrs.Data
         public static DataTable F1GetAgrByCode(String code)
         {
             DataTable dt = null;
-            /*
+            
             RequestPackage rqp = new RequestPackage
             {
                 Command = "ПолучитьДоговорПоКоду",
@@ -19,13 +19,13 @@ namespace Agrs.Data
                 }
             };
             dt = GetFirstTable(rqp.GetResponse("http://127.0.0.1:11014/").Data);
-            */
+            
             return dt;
         }
         public static DataTable F1GetCustTable(String filter)
         {
             DataTable dt = null;
-            /*
+            
             RequestPackage rqp = new RequestPackage();
             rqp.Command = "[dbo].[oc_клиенты_select_1]";
             if (!String.IsNullOrWhiteSpace(filter))
@@ -36,13 +36,13 @@ namespace Agrs.Data
                 };
             }
             dt = GetFirstTable(rqp.GetResponse("http://127.0.0.1:11014/").Data);
-            */
+            
             return dt;
         }
         public static DataTable F1GetStuffTable(String filter)
         {
             DataTable dt = null;
-            /*
+            
             RequestPackage rqp = new RequestPackage();
             rqp.Command = "[dbo].[oc_сотрудники_select_1]";
             if (!String.IsNullOrWhiteSpace(filter))
@@ -53,13 +53,13 @@ namespace Agrs.Data
                 };
             }
             dt = GetFirstTable(rqp.GetResponse("http://127.0.0.1:11014/").Data);
-            */
+            
             return dt;
         }
         public static Int32 F1Upsert1c(RequestPackage rqp)
         {
             Int32 code = -1;
-            /*
+            
             ResponsePackage rsp = rqp.GetResponse("http://127.0.0.1:11014/");
             if ((rsp != null) && (rsp.Data != null))
             {
@@ -69,7 +69,7 @@ namespace Agrs.Data
                     code = (Int32)v;
                 }
             }
-            */
+            
             return code;
         }
         public static void F1UpsertSql(String cmd, RequestPackage rqp0)
