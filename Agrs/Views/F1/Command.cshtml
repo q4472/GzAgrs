@@ -66,14 +66,16 @@
                         if (cmd == 'insert') {
                             $('#agrs_f1_index div.sect_1 div.grid_panel').html(data);
                             setCommandButtons();
+                            alert('Внимание! Список формируется не по фильтру, а по вновь введённым данным.');
                         } else if (cmd == 'update') {
                             ArgsViewsF1Filter.apply();
                         } else {
                             alert('Что-то не так.<br \>' + data);
                         }
+                        cmd = 'update';
                     }
                 });
-                cmd = 'update';
+                //cmd = 'update';
             },
             addButtonClick: function () {
                 cmd = 'insert';
