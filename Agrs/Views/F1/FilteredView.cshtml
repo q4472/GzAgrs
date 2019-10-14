@@ -35,6 +35,10 @@
         #agrs_views_f1_filtered_view tr.selected {
             background-color: #cfc;
         }
+
+        #agrs_views_f1_filtered_view tr.repeated {
+            background-color: #faa;
+        }
 </style>
 <div id="agrs_views_f1_filtered_view">
     <div>
@@ -55,7 +59,9 @@
         <table>
             @foreach (DataRow dr in Model.NetSqlГарзаДоговоры.Rows)
             {
-                <tr data-guid="@dr["f0"]" onclick="AgrsViewsF1FilteredView.rowClick(this);">
+                <tr data-guid="@dr["f0"]" 
+                    onclick="AgrsViewsF1FilteredView.rowClick(this);"
+                    class="@((dr["f16"] is String && ((String)dr["f16"]).Contains("дубликат")) ? "repeated" : "")">
                     <td><div style="width: 80px">@dr["f1"]</div></td>
                     <td><div style="width: 60px; text-align: right">@dr["f2"]</div></td>
                     <td><div style="width: 180px">@dr["f3"]</div></td>
