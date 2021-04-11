@@ -53,6 +53,9 @@
                     rqp.Parameters.push({ Name: element.getAttribute('name'), Value: $(element).prop('checked') });
                 });
                 clearForm();
+
+                //console.log(rqp); return;
+
                 Nskd.Http.post({
                     url: '/Agrs/F1/Save',
                     rqp: rqp,
