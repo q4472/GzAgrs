@@ -202,7 +202,53 @@
                         <tr>
                             <td>Финансирование:</td>
                             <td>
-                                <input type="text" name="fin" value="@Model.NetSqlГарзаДоговоры.Rows[0]["fin"]" />
+                                @{ 
+                                    String AgrsViewsF1DetailFinValue = "";
+                                    if (Model.NetSqlГарзаДоговоры.Rows[0]["fin"] != DBNull.Value)
+                                    {
+                                        AgrsViewsF1DetailFinValue = Model.NetSqlГарзаДоговоры.Rows[0]["fin"].ToString();
+                                    }
+                                }
+                                <select name="fin">
+                                    @if (AgrsViewsF1DetailFinValue == "") {
+                                        <option value="" selected></option>
+                                    }
+                                    else {
+                                        <option value=""></option>
+                                    }
+                                    @if (AgrsViewsF1DetailFinValue == "0")
+                                    {
+                                        <option value="0" selected>собст. средства</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="0">собст. средства</option>
+                                    }
+                                    @if (AgrsViewsF1DetailFinValue == "1")
+                                    {
+                                        <option value="1" selected>фед. бюджет</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="1">фед. бюджет</option>
+                                    }
+                                    @if (AgrsViewsF1DetailFinValue == "2")
+                                    {
+                                        <option value="2" selected>рег. бюджет</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="2">рег. бюджет</option>
+                                    }
+                                    @if (AgrsViewsF1DetailFinValue == "3")
+                                    {
+                                        <option value="3" selected>смесь</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="3">смесь</option>
+                                    }
+                                </select>
                             </td>
                         </tr>
                         <tr>
@@ -256,13 +302,15 @@
 </div>
 <script type="text/javascript">
     var AgrsViewsF1Detail = (function () {
-        var main = $('#agrs_views_f1_detail');
-        var modalBG = main.find('div.modal_bg');
-        var modalContent = main.find('div.modal_content');
-        var filter4 = main.find('input[type="text"][name="f4"]'); // Клиенты
-        var code4 = main.find('input[type="hidden"][name="f4c"]');
-        var filter12 = main.find('input[type="text"][name="f12"]'); // Сотрудники
-        var code12 = main.find('input[type="hidden"][name="f12c"]');
+        let main = $('#agrs_views_f1_detail');
+        let modalBG = main.find('div.modal_bg');
+        let modalContent = main.find('div.modal_content');
+        let filter4 = main.find('input[type="text"][name="f4"]'); // Клиенты
+        let code4 = main.find('input[type="hidden"][name="f4c"]');
+        let filter12 = main.find('input[type="text"][name="f12"]'); // Сотрудники
+        let code12 = main.find('input[type="hidden"][name="f12c"]');
+        let fin = main.find('select[name="fin"]');
+        fin.change(function () { fieldChange(this); });
         main.find('input').change(function () { fieldChange(this); });
         main.find('input.date').change(function () { Nskd.Validator.dNorm(this); });
         main.find('input.n2').change(function () { Nskd.Validator.nNorm(this, 2); });
