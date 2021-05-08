@@ -94,6 +94,7 @@
                     $('#agrs_views_f1_detail input[type="hidden"], #agrs_views_f1_detail input[type="text"]')
                         .val('')
                         .css('background-color', '#fff');
+                    $('#agrs_views_f1_detail select[name="fin"] option[value=""]').prop('selected', true);
 
                     // выбрать начальное значение для поля "Вид контракта" f1
                     $('#agrs_views_f1_detail select option:eq(1)').prop('selected', true);
